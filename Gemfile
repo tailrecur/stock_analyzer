@@ -37,3 +37,5 @@ group :test do
   gem 'factory_girl'
   gem "not_a_mock"
 end
+
+gem 'rspec-rails', :groups => [:development, :test]
