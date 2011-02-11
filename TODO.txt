@@ -1,0 +1,43 @@
+update financial data only if new quarter
+Check why acid test ratio is null
+Check why outstanding shares for some companies is zero in quarterly results.
+
+Consolidate migration scripts
+Consolidate sectors
+
+update sector only if new company
+
+"current.adjusted_no_of_shares < previous.adjusted_no_of_shares" might be faulty incase of splits and bonuses. equity capital might be better.
+
+EV = (Market Cap + Debt + preferred Shares - Cash & Cash Equivalents)
+1. EVtoSales =  EV / Annual Sales. lower is better. Compare to sectoral average
+
+EBITDA = Earnings before interest, tax, depreciation, and amortisation  
+2. EV/EBITDA compare to sectoral average. higher is better
+
+3. PBT Margin. Compare to companies' past values. Higher is better.    PBT Margin = PBT / Net Sales % 
+
+4. ROE (RONW) = Net Income / Shareholder Equity. Compare to past values and sectoral average. Higher is better
+
+5. ROCE = (EBIT - Non-Operating Income) / (Total Assets - Current Liabilites) = Operating Profit / Total Funds . Should be higher than the rate at which the company borrows. Compare same as ROE
+
+6. Debt/Equity - Lower is better. Compare to sectoral average.
+
+Net Current Asset Value (NCAV) = current assets - Current Liabilities - Long-term debt - Preferred Stock
+7. NCAV/Share usage CTP <= 67% of NCAVPS
+
+8. Price / Book value. compare to sectoral average. lower is better
+
+9. Acid Test Ratio = (Cash + Accounts Receivable + Short term investments) / Current liabilities = (Currents Assets + Investments) / Current Liabilities
+
+Apply formula noting which price-dependent formula passes/fails.
+If there are any price-dependent formula which fails,
+decrement the price and evaluate these formulae again
+Whenever a formula passes, save that price-formula pair
+Continue till all formula have been evaluated,
+
+low =0, high = closing_price
+all formulae which pass at 0, move to passable, throw out all which fail
+for all in high_bucket, apply at average price, 
+
+
