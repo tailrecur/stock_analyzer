@@ -22,9 +22,11 @@ class CreateBalanceSheets < ActiveRecord::Migration
       t.timestamps
     end
     add_index :balance_sheets, [:company_id, :period_ended], :unique => true
+    add_column :companies, :balance_sheets_count, :integer, :default => 0
   end
 
   def self.down
     drop_table :balance_sheets
+    remove_column :companies, :balance_sheets_count
   end
 end

@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20110212111216) do
     t.integer  "sector_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "balance_sheets_count", :default => 0
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
