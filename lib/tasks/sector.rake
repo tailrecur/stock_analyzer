@@ -13,15 +13,22 @@ namespace :sector do
   desc "Retrieve companies by sector"
   task :populate_by_sector => :environment do
     url = "http://www.moneycontrol.com/stocks/marketinfo/marketcap.php?indcode=sector_name&optex=BSE"
+    count = 0
     Sector.all.each do |sector|
       doc = Nokogiri::HTML(open(url.sub("sector_name", CGI::escape(sector.name))))  
+      puts "Did not find data for sector #{sector.name}" if doc.css("td a").blank?
       doc.css("td a").each do |anchor|
         mc_code = anchor[:href].split('/').last
-        company = Company.where(:mc_code => mc_code).first
+        company = Company.where(:mc_code => mc_code).includes(:sector).first
+        count = count + 1
         if company
-          puts "Updating #{company.name} with sector #{sector.name}"
-          company.update_attributes(:sector => sector)
+          puts "Found company #{company.name} with sector #{company.sector.name}"
+          if company.sector != sector
+            puts "Updating #{company.name} with sector #{sector.name}"
+            company.update_attributes(:sector => sector)
+          end
         else
+          puts "Did not find company #{company.name}"
           doc = Nokogiri::HTML(open("http://www.moneycontrol.com" + anchor[:href]))  
           company_name = doc.at_css("h1").text.strip
           puts "Creating company with name #{company_name}, mc_code #{mc_code} for sector #{sector.name}"
@@ -29,6 +36,7 @@ namespace :sector do
         end
       end
     end
+    puts "\nProcessed #{count} companies"
   end
 
   desc "Retrieve companies by sector"
