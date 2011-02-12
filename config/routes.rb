@@ -1,4 +1,6 @@
 StockAnalyzer::Application.routes.draw do
+  resources :balance_sheets
+
   resources :sectors
 
   resources :companies

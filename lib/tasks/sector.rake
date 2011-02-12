@@ -28,7 +28,7 @@ namespace :sector do
             company.update_attributes(:sector => sector)
           end
         else
-          puts "Did not find company #{company.name}"
+          puts "Did not find company with code #{mc_code}"
           doc = Nokogiri::HTML(open("http://www.moneycontrol.com" + anchor[:href]))  
           company_name = doc.at_css("h1").text.strip
           puts "Creating company with name #{company_name}, mc_code #{mc_code} for sector #{sector.name}"

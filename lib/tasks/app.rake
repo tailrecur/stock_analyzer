@@ -1,1 +1,1 @@
-task :update_datapa => ["sector:retrieve_latest", "sector:populate_by_sector"]
+task :update_data => ["sector:retrieve_latest", "sector:populate_by_sector"]
