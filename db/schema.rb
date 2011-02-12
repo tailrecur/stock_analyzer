@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20110211180511) do
     t.datetime "updated_at"
   end
 
-  add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code"
+  add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
   add_index "companies", ["sector_id"], :name => "index_companies_on_sector_id"
 
   create_table "sectors", :force => true do |t|
@@ -30,6 +30,6 @@ ActiveRecord::Schema.define(:version => 20110211180511) do
     t.datetime "updated_at"
   end
 
-  add_index "sectors", ["mc_code"], :name => "index_sectors_on_mc_code"
+  add_index "sectors", ["name"], :name => "index_sectors_on_name", :unique => true
 
 end

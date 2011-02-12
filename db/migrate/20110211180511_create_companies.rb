@@ -7,7 +7,7 @@ class CreateCompanies < ActiveRecord::Migration
       t.timestamps
     end
     
-    add_index :companies, :mc_code
+    add_index :companies, :mc_code, :unique => true
     add_index :companies, :sector_id
   end
 

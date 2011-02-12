@@ -8,7 +8,7 @@ class CreateSectors < ActiveRecord::Migration
     end
     
       
-    add_index :sectors, :mc_code
+    add_index :sectors, :name, :unique => true
   end
 
   def self.down

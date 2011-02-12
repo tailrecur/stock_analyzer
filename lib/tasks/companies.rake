@@ -13,8 +13,7 @@ namespace :company do
       combined_code = company[:value].split('|')
       unless Company.find_by_mc_code(combined_code.second)
         puts "Creating company #{combined_code.first}"
-        sector = Sector.find_or_create_by_mc_code(combined_code.last)
-        Company.create!(:name => combined_code.first, :mc_code => combined_code.second, :sector => sector)
+        Company.create!(:name => combined_code.first, :mc_code => combined_code.second)
       end
     end
   end
