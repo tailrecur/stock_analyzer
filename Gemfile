@@ -6,6 +6,8 @@ gem 'rails', '3.0.4'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'nokogiri'
+gem 'mechanize'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -19,7 +21,6 @@ gem 'sqlite3'
 
 # Bundle the extra gems:
 # gem 'bj'
-# gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 
@@ -34,8 +35,9 @@ group :test do
   gem 'rspec-core'
   gem 'rspec-expectations'
   gem 'shoulda'
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem "not_a_mock"
 end
 
 gem 'rspec-rails', :groups => [:development, :test]
+gem "rails3-generators", :group => :development
