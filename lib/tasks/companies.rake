@@ -25,8 +25,9 @@ namespace :company do
       doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').underscore).sub("mc_code", company.mc_code)))
       table = doc.at_css(".table4:nth-of-type(4)")
       periods = table.css("tr:nth-child(1) .detb[align='right']").collect { |node| node.text.strip }
-      data = parse_data(table)
+      (puts("No data found for #{company.name}") and next) if periods.blank?
 
+      data = parse_data(table)
       balance_sheet_class = company.name.downcase.include?('bank') ? BankBalanceSheet : CompanyBalanceSheet
       periods.each_with_index do |period, index|
         balance_sheet = company.balance_sheets.where(:period_ended => Date.parse(period)).first
