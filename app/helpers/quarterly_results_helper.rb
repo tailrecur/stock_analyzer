@@ -1,0 +1,2 @@
+module QuarterlyResultsHelper
+end

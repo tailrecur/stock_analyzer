@@ -22,12 +22,11 @@ namespace :company do
   task :update_balance_sheets => :environment do
     url = "http://www.moneycontrol.com/financials/company_name/balance-sheet/mc_code"
     Company.find_each do |company|
-      doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').underscore).sub("mc_code", company.mc_code)))
-      table = doc.at_css(".table4:nth-of-type(4)")
-      periods = table.css("tr:nth-child(1) .detb[align='right']").collect { |node| node.text.strip }
-      (puts("No data found for #{company.name}") and next) if periods.blank?
+      doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)))
 
-      data = parse_data(table)
+      periods, data = parse_data(doc)
+      next if periods.blank?
+
       balance_sheet_class = company.name.downcase.include?('bank') ? BankBalanceSheet : CompanyBalanceSheet
       periods.each_with_index do |period, index|
         balance_sheet = company.balance_sheets.where(:period_ended => Date.parse(period)).first
@@ -45,13 +44,46 @@ namespace :company do
     end
   end
 
-  def parse_data(table)
-    {}.tap do |data|
-      table.css("tr[height='22px']")[3..-1].each do |row|
+  desc "Update quarterly_results"
+  task :update_quarterly_results => :environment do
+    url = "http://www.moneycontrol.com/financials/company_name/results/quarterly-results/mc_code"
+    Company.find_each do |company|
+      ActiveRecord::Base.transaction do
+        doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)))
+
+        periods, data = parse_data(doc)
+        next if periods.blank?
+
+        periods.each_with_index do |period, index|
+          quarterly_result = company.quarterly_results.where(:period_ended => Date.parse(period)).first
+          if quarterly_result
+            populate_model(quarterly_result, data, index)
+            if quarterly_result.changed?
+              puts "Updating quarterly result for #{company.name} for year ended #{period}"
+              quarterly_result.save!
+            end
+          else
+            puts "Creating quarterly result for #{company.name} for year ended #{period}"
+            company.quarterly_results << populate_model(QuarterlyResult.new(:period_ended => Date.parse(period)), data, index)
+          end
+        end
+      end
+    end
+  end
+
+  def parse_data(doc)
+    data = {}
+    table = doc.at_css(".table4:nth-of-type(4)")
+    periods = table.css("tr:nth-child(3) .detb[align='right']").collect { |node| node.text.strip }
+    if periods.blank?
+      puts("No data found for #{doc.at_css('.pg_head').text.strip}")
+    else
+      table.css("tr[height='22px']").each do |row|
         columns = row.css("td")
         data[columns.shift.text.strip] = columns.collect { |node| node.text.strip }
       end
     end
+    [periods, data]
   end
 
   def populate_model(model, data, index)

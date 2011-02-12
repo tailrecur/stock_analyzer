@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110212111216) do
+ActiveRecord::Schema.define(:version => 20110212172642) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -66,11 +66,52 @@ ActiveRecord::Schema.define(:version => 20110212111216) do
     t.integer  "sector_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "balance_sheets_count", :default => 0
+    t.integer  "balance_sheets_count",    :default => 0
+    t.integer  "quarterly_results_count", :default => 0
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
   add_index "companies", ["sector_id"], :name => "index_companies_on_sector_id"
+
+  create_table "quarterly_results", :force => true do |t|
+    t.date     "period_ended"
+    t.float    "sales_turnover"
+    t.float    "other_income"
+    t.float    "total_income"
+    t.float    "total_expenses"
+    t.float    "operating_profit"
+    t.float    "profit_on_assets_sale"
+    t.float    "profit_on_investments_sale"
+    t.float    "profit_on_forex"
+    t.float    "vrs_adjustment"
+    t.float    "other_extraordinary_income"
+    t.float    "total_extraordinary_income"
+    t.float    "tax_on_extraordinary_income"
+    t.float    "net_extraordinary_income"
+    t.float    "gross_profit"
+    t.float    "interest"
+    t.float    "pbdt"
+    t.float    "depreciation"
+    t.float    "depreciation_on_revaluated_assets"
+    t.float    "pbt"
+    t.float    "tax"
+    t.float    "net_profit"
+    t.float    "prior_years_income"
+    t.float    "depreciation_for_previous_years"
+    t.float    "dividend"
+    t.float    "dividend_tax"
+    t.float    "dividend_percentage"
+    t.float    "eps"
+    t.float    "book_value"
+    t.float    "equity"
+    t.float    "reserves"
+    t.float    "face_value"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "quarterly_results", ["company_id", "period_ended"], :name => "index_quarterly_results_on_company_id_and_period_ended", :unique => true
 
   create_table "sectors", :force => true do |t|
     t.string   "name"

@@ -12,3 +12,15 @@ Loans and Advances: loans_and_advances
 Deffered Credit: deferred_credit
 Cash and Bank Balance: cash_and_bank_balance
 Bills for collection: bills_for_collection
+Profit On Sale Of Assets: profit_on_assets_sale
+Profit On Sale Of Investments: profit_on_investments_sale
+Gain/Loss On Foreign Exchange: profit_on_forex
+Other Extraordinary Income/Expenses: other_extraordinary_income
+Total Extraordinary Income/Expenses: total_extraordinary_income
+Tax On Extraordinary Items: tax_on_extraordinary_income
+Net Extra Ordinary Income/Expenses: net_extraordinary_income
+Depreciation On Revaluation Of Assets: depreciation_on_revaluated_assets
+Prior Years Income/Expenses: prior_years_income
+Depreciation for Previous Years Written Back/ Provided: depreciation_for_previous_years
+Dividend (%): dividend_percentage
+Earnings Per Share: eps
