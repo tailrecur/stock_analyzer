@@ -1,0 +1,14 @@
+---
+Book Value (Rs): book_value
+Networth: net_worth
+"Less: Accum. Depreciation": accumulated_depreciation
+Miscellaneous Expenses: misc_expenses
+Book Value (Rs): book_value
+Other Liabilities & Provisions: other_liabilities
+Cash & Balances with RBI: balance_with_rbi
+Balance with Banks, Money at Call: money_at_call
+Capital Work in Progress: capital_work_in_progress
+Loans and Advances: loans_and_advances
+Deffered Credit: deferred_credit
+Cash and Bank Balance: cash_and_bank_balance
+Bills for collection: bills_for_collection

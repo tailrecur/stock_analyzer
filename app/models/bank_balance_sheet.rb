@@ -1,0 +1,3 @@
+class BankBalanceSheet < BalanceSheet
+
+end

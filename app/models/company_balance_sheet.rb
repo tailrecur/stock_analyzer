@@ -1,0 +1,3 @@
+class CompanyBalanceSheet < BalanceSheet
+
+end
