@@ -20,61 +20,51 @@ namespace :company do
 
   desc "Update balance_sheets"
   task :update_balance_sheets => :environment do
-    url = "http://www.moneycontrol.com/financials/company_name/balance-sheet/mc_code"
-    Company.find_each do |company|
-      doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)))
-
-      periods, data = parse_data(doc)
-      next if periods.blank?
-
-      balance_sheet_class = company.name.downcase.include?('bank') ? BankBalanceSheet : CompanyBalanceSheet
-      periods.each_with_index do |period, index|
-        balance_sheet = company.balance_sheets.where(:period_ended => Date.parse(period)).first
-        if balance_sheet
-          populate_model(balance_sheet, data, index)
-          if balance_sheet.changed?
-            puts "Updating balance sheet for #{company.name} for year ended #{period}"
-            balance_sheet.save!
-          end
-        else
-          puts "Creating balance sheet for #{company.name} for year ended #{period}"
-          company.balance_sheets << populate_model(balance_sheet_class.new(:period_ended => Date.parse(period)), data, index)
-        end
-      end
+    process_for(:balance_sheets, "http://www.moneycontrol.com/financials/company_name/balance-sheet/mc_code") do |company|
+      company.name.downcase.include?('bank') ? BankBalanceSheet : CompanyBalanceSheet
     end
   end
 
   desc "Update quarterly_results"
   task :update_quarterly_results => :environment do
-    url = "http://www.moneycontrol.com/financials/company_name/results/quarterly-results/mc_code"
-    Company.find_each do |company|
-      ActiveRecord::Base.transaction do
-        doc = Nokogiri::HTML(open(url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)))
+    process_for(:quarterly_results, "http://www.moneycontrol.com/financials/company_name/results/quarterly-results/mc_code") do |company|
+      QuarterlyResult
+    end
+  end
 
+  def process_for(model_type, url)
+    Company.all[0..3].each do |company|
+      ActiveRecord::Base.transaction do
+        doc = Nokogiri::HTML(open(url_for(company, url)))
         periods, data = parse_data(doc)
         next if periods.blank?
-
         periods.each_with_index do |period, index|
-          quarterly_result = company.quarterly_results.where(:period_ended => Date.parse(period)).first
-          if quarterly_result
-            populate_model(quarterly_result, data, index)
-            if quarterly_result.changed?
-              puts "Updating quarterly result for #{company.name} for year ended #{period}"
-              quarterly_result.save!
+          model = company.send(model_type).where(:period_ended => period).first
+          if model
+            populate_model(model, data, index)
+            if model.changed?
+              puts "Updating #{model_type} for #{company.name} for year ended #{period}"
+              model.save!
             end
           else
-            puts "Creating quarterly result for #{company.name} for year ended #{period}"
-            company.quarterly_results << populate_model(QuarterlyResult.new(:period_ended => Date.parse(period)), data, index)
+            puts "Creating #{model_type} for #{company.name} for year ended #{period}"
+            model_class = yield(company)
+            company.send(model_type) << populate_model(model_class.new(:period_ended => period), data, index)
           end
         end
       end
+      print "."
     end
+  end
+
+  def url_for(company, url)
+    url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)
   end
 
   def parse_data(doc)
     data = {}
     table = doc.at_css(".table4:nth-of-type(4)")
-    periods = table.css("tr:nth-child(3) .detb[align='right']").collect { |node| node.text.strip }
+    periods = retrieve_periods(table)
     if periods.blank?
       puts("No data found for #{doc.at_css('.pg_head').text.strip}")
     else
@@ -84,6 +74,10 @@ namespace :company do
       end
     end
     [periods, data]
+  end
+
+  def retrieve_periods(table)
+    table.css(".detb[align='right']").take_while { |node| Date.parse(node.text.strip) rescue nil }.collect { |node| Date.parse(node.text.strip) }
   end
 
   def populate_model(model, data, index)
