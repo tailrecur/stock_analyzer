@@ -33,11 +33,14 @@ namespace :company do
   end
 
   def process_for(model_type, url)
-    Company.all[0..3].each do |company|
+    Company.find_each do |company|
       ActiveRecord::Base.transaction do
-        doc = Nokogiri::HTML(open(url_for(company, url)))
-        periods, data = parse_data(doc)
-        next if periods.blank?
+        table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
+
+        periods = parse_periods(table)
+        (puts("No data found for #{doc.at_css('.pg_head').text.strip}") and next) if periods.blank?
+
+        data = parse_data(table)
         periods.each_with_index do |period, index|
           model = company.send(model_type).where(:period_ended => period).first
           if model
@@ -61,22 +64,16 @@ namespace :company do
     url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)
   end
 
-  def parse_data(doc)
-    data = {}
-    table = doc.at_css(".table4:nth-of-type(4)")
-    periods = retrieve_periods(table)
-    if periods.blank?
-      puts("No data found for #{doc.at_css('.pg_head').text.strip}")
-    else
+  def parse_data(table)
+    {}.tap do |data|
       table.css("tr[height='22px']").each do |row|
         columns = row.css("td")
         data[columns.shift.text.strip] = columns.collect { |node| node.text.strip }
       end
     end
-    [periods, data]
   end
 
-  def retrieve_periods(table)
+  def parse_periods(table)
     table.css(".detb[align='right']").take_while { |node| Date.parse(node.text.strip) rescue nil }.collect { |node| Date.parse(node.text.strip) }
   end
 
