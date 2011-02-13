@@ -21,7 +21,7 @@ namespace :company do
   desc "Update company data"
   task :update_data => :environment do
     url = "http://indiaearnings.moneycontrol.com/sub_india/comp_results.php?sc_did=mc_code"
-    Company.find_each do |company|
+    Company.where(:price => nil).find_each do |company|
       doc = Nokogiri::HTML(open(url_for(company, url)))
       company.price = doc.at_css("#nseprice b").text.strip
       fill_data(company, [:bse_code, :nse_code, :isin], doc.at_css(".MB10").text.strip.chomp(")").split("|").collect {|val| val.split(":").last.strip})
