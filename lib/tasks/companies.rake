@@ -33,12 +33,12 @@ namespace :company do
   end
 
   def process_for(model_type, url)
-    Company.find_each do |company|
+    relevant_companies(model_type).each do |company|
       ActiveRecord::Base.transaction do
         table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
 
         periods = parse_periods(table)
-        (puts("No data found for #{doc.at_css('.pg_head').text.strip}") and next) if periods.blank?
+        (puts("No data found for #{company.name}") and next) if periods.blank?
 
         data = parse_data(table)
         periods.each_with_index do |period, index|
@@ -56,8 +56,12 @@ namespace :company do
           end
         end
       end
-      print "."
+      puts "."
     end
+  end
+
+  def relevant_companies(model_type)
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])
   end
 
   def url_for(company, url)
