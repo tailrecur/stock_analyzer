@@ -18,6 +18,24 @@ namespace :company do
     end
   end
 
+  desc "Update company data"
+  task :update_data => :environment do
+    url = "http://indiaearnings.moneycontrol.com/sub_india/comp_results.php?sc_did=mc_code"
+    Company.find_each do |company|
+      doc = Nokogiri::HTML(open(url_for(company, url)))
+      company.price = doc.at_css("#nseprice b").text.strip
+      fill_data(company, [:bse_code, :nse_code, :isin], doc.at_css(".MB10").text.strip.chomp(")").split("|").collect {|val| val.split(":").last.strip})
+      fill_data(company, [:day_high, :day_low, :volume, :year_high, :year_low], doc.css("#nsetab .company td:last-child").map(&:text))
+      fill_data(company, [:market_cap, :dividend_percentage, :eps_ttm, :pe_ratio, :book_value, :face_value], doc.css("div.PL15.PR15 table td:last-child").map(&:text))
+      company.save!
+      print "."
+    end
+  end
+
+  def fill_data(model, attrs, data)
+    attrs.each_with_index { |attr, index| model.send("#{attr}=", data[index].strip) }
+  end
+
   desc "Update balance_sheets"
   task :update_balance_sheets => :environment do
     process_for(:balance_sheets, "http://www.moneycontrol.com/financials/company_name/balance-sheet/mc_code") do |company|

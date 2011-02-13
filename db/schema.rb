@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110212172642) do
+ActiveRecord::Schema.define(:version => 20110213090252) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -68,6 +68,21 @@ ActiveRecord::Schema.define(:version => 20110212172642) do
     t.datetime "updated_at"
     t.integer  "balance_sheets_count",    :default => 0
     t.integer  "quarterly_results_count", :default => 0
+    t.float    "day_high"
+    t.float    "day_low"
+    t.float    "price"
+    t.float    "year_high"
+    t.float    "year_low"
+    t.float    "volume"
+    t.float    "market_cap"
+    t.float    "dividend_percentage"
+    t.float    "eps_ttm"
+    t.float    "pe_ratio"
+    t.float    "book_value"
+    t.float    "face_value"
+    t.string   "bse_code"
+    t.string   "nse_code"
+    t.string   "isin"
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
