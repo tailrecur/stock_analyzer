@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
+require 'csv'
 
 namespace :company do
 
@@ -24,13 +25,28 @@ namespace :company do
     Company.where(:price => nil).find_each do |company|
       doc = Nokogiri::HTML(open(url_for(company, url)))
       company.price = doc.at_css("#nseprice b").text.strip
-      fill_data(company, [:bse_code, :nse_code, :isin], doc.at_css(".MB10").text.strip.chomp(")").split("|").collect {|val| val.split(":").last.strip})
+      fill_data(company, [:bse_code, :nse_code, :isin], doc.at_css(".MB10").text.strip.chomp(")").split("|").collect { |val| val.split(":").last.strip })
       fill_data(company, [:day_high, :day_low, :volume, :year_high, :year_low], doc.css("#nsetab .company td:last-child").map(&:text))
       fill_data(company, [:market_cap, :dividend_percentage, :eps_ttm, :pe_ratio, :book_value, :face_value], doc.css("div.PL15.PR15 table td:last-child").map(&:text))
       company.save!
       print "."
     end
   end
+
+  desc "Update company prices from NSE"
+  task :update_price_data => :environment do
+    url = "http://www.nseindia.com/content/historical/EQUITIES/2011/FEB/cm11FEB2011bhav.csv.zip"
+#    `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
+    CSV.parse(`unzip -p tmp/nse_data.csv.zip`) do |row|
+      company = Company.find_by_nse_code(row.first)
+      if company
+        fill_data(company, [:day_high, :day_low, :price, :volume], row[3..5]+[row[8]])
+        company.save!
+      end
+      print "."
+    end
+  end
+
 
   def fill_data(model, attrs, data)
     attrs.each_with_index { |attr, index| model.send("#{attr}=", data[index].strip) }
