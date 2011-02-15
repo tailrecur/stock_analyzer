@@ -49,7 +49,7 @@ namespace :company do
   end
 
   def last_working_day(date)
-    date.cwday <=5 ? date : date.yesterday
+    date.cwday <=5 ? date : last_working_day(date.yesterday)
   end
 
 
