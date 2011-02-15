@@ -38,13 +38,15 @@ namespace :company do
     day = last_working_day(Date.yesterday)
     url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
     `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
-    CSV.parse(`unzip -p tmp/nse_data.csv.zip`) do |row|
-      company = Company.find_by_nse_code(row.first)
-      if company
-        fill_data(company, [:day_high, :day_low, :price, :volume], row[3..5]+[row[8]])
-        company.save!
+    ActiveRecord::Base.transaction do
+      CSV.parse(`unzip -p tmp/nse_data.csv.zip`) do |row|
+        company = Company.find_by_nse_code(row.first)
+        if company
+          fill_data(company, [:day_high, :day_low, :price, :volume], row[3..5]+[row[8]])
+          company.save!
+        end
+        print "."
       end
-      print "."
     end
   end
 
