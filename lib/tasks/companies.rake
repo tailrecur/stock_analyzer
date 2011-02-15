@@ -35,8 +35,9 @@ namespace :company do
 
   desc "Update company prices from NSE"
   task :update_price_data => :environment do
-    url = "http://www.nseindia.com/content/historical/EQUITIES/2011/FEB/cm11FEB2011bhav.csv.zip"
-#    `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
+    day = last_working_day(Date.yesterday)
+    url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
+    `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
     CSV.parse(`unzip -p tmp/nse_data.csv.zip`) do |row|
       company = Company.find_by_nse_code(row.first)
       if company
@@ -45,6 +46,10 @@ namespace :company do
       end
       print "."
     end
+  end
+
+  def last_working_day(date)
+    date.cwday <=5 ? date : date.yesterday
   end
 
 
