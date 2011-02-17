@@ -24,3 +24,15 @@ Prior Years Income/Expenses: prior_years_income
 Depreciation for Previous Years Written Back/ Provided: depreciation_for_previous_years
 Dividend (%): dividend_percentage
 Earnings Per Share: eps
+Power & Fuel Cost: power_and_fuel_cost
+Miscellaneous Expenses: misc_expenses
+Preoperative Exp Capitalised: preoperative_capex
+Extra-ordinary items: extraordinary_items
+Reported Net Profit: net_profit
+Corporate Dividend Tax: dividend_tax
+Shares in issue (lakhs): issued_shares
+Earning Per Share (Rs): eps
+Equity Dividend (%): dividend_percentage
+Book Value (Rs): book_value
+Selling and Admin Expenses: sales_and_admin_expenses
+Profit Before Tax: pbt

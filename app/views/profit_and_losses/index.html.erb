@@ -1,0 +1,21 @@
+<h1>Listing profit_and_losses</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @profit_and_losses.each do |profit_and_loss| %>
+  <tr>
+    <td><%= link_to 'Show', profit_and_loss %></td>
+    <td><%= link_to 'Edit', edit_profit_and_loss_path(profit_and_loss) %></td>
+    <td><%= link_to 'Destroy', profit_and_loss, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Profit and loss', new_profit_and_loss_path %>

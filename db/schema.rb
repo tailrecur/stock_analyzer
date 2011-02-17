@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110213090252) do
+ActiveRecord::Schema.define(:version => 20110217182010) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -83,10 +83,52 @@ ActiveRecord::Schema.define(:version => 20110213090252) do
     t.string   "bse_code"
     t.string   "nse_code"
     t.string   "isin"
+    t.integer  "profit_and_losses_count", :default => 0
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
   add_index "companies", ["sector_id"], :name => "index_companies_on_sector_id"
+
+  create_table "profit_and_losses", :force => true do |t|
+    t.date     "period_ended"
+    t.float    "sales_turnover"
+    t.float    "excise_duty"
+    t.float    "net_sales"
+    t.float    "other_income"
+    t.float    "stock_adjustments"
+    t.float    "total_income"
+    t.float    "raw_materials"
+    t.float    "power_and_fuel_cost"
+    t.float    "employee_cost"
+    t.float    "other_manufacturing_expenses"
+    t.float    "sales_and_admin_expenses"
+    t.float    "misc_expenses"
+    t.float    "preoperative_capex"
+    t.float    "total_expenses"
+    t.float    "operating_profit"
+    t.float    "pbdit"
+    t.float    "interest"
+    t.float    "pbdt"
+    t.float    "depreciation"
+    t.float    "other_written_off"
+    t.float    "pbt"
+    t.float    "extraordinary_items"
+    t.float    "tax"
+    t.float    "net_profit"
+    t.float    "total_value_addition"
+    t.float    "preference_dividend"
+    t.float    "equity_dividend"
+    t.float    "dividend_tax"
+    t.float    "issued_shares"
+    t.float    "eps"
+    t.float    "dividend_percentage"
+    t.float    "book_value"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profit_and_losses", ["company_id", "period_ended"], :name => "index_profit_and_losses_on_company_id_and_period_ended", :unique => true
 
   create_table "quarterly_results", :force => true do |t|
     t.date     "period_ended"

@@ -73,6 +73,13 @@ namespace :company do
     end
   end
 
+  desc "Update profit and loss statements"
+  task :update_profit_and_loss => :environment do
+    process_for(:profit_and_losses, "http://www.moneycontrol.com/financials/company_name/profit-loss/mc_code") do |company|
+      ProfitAndLoss
+    end
+  end
+
   def process_for(model_type, url)
     relevant_companies(model_type).each do |company|
       ActiveRecord::Base.transaction do
@@ -102,7 +109,7 @@ namespace :company do
   end
 
   def relevant_companies(model_type)
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])[0..1]
   end
 
   def url_for(company, url)
