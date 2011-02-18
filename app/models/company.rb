@@ -9,21 +9,38 @@ class Company < ActiveRecord::Base
 
   default_scope where(:active => true)
 
-  def eps
-    quarterly_results.yearly_latest.collect(&:eps).sum
-  end
-  memoize :eps
-
-  def pe_ratio
-    val = price / eps
-    val.nan? ? nil : val
-  end
-
   def profit_and_loss
     profit_and_losses.latest
+  end
+  memoize :profit_and_loss
+
+  def balance_sheet
+    balance_sheets.latest
+  end
+  memoize :balance_sheet
+
+  def trailing_year_quarters
+    quarterly_results.yearly_latest
+  end
+  memoize :trailing_year_quarters
+
+  def eps
+    trailing_year_quarters.collect(&:eps).sum
+  end
+
+  def pe_ratio
+    price / eps if not eps.zero?
   end
 
   def market_cap
     profit_and_loss.issued_shares * price
+  end
+
+  def yearly_sales
+    trailing_year_quarters.collect(&:sales_turnover).sum
+  end
+
+  def ev_to_sales
+    balance_sheet.enterprise_value / yearly_sales if not yearly_sales.zero?
   end
 end

@@ -5,9 +5,9 @@ describe Company do
   subject { company }
 
   describe "eps" do
-    it { should have_eps(100).for(4).quarters }
-    it { should have_eps(180).for(6).quarters }
-    it { should have_eps(nil).for(3).quarters }
+    it { should have_value(:eps, 40).for(4).quarters(:eps => 10) }
+    it { should have_value(:eps, 40).for(6).quarters(:eps => 10) }
+    it { should have_value(:eps, nil).for(3).quarters(:eps => 10) }
   end
 
   describe "pe_ratio" do
@@ -15,7 +15,7 @@ describe Company do
     it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => 20) }
     it { should have_value(:pe_ratio, nil).with(:price => 50).with_stub(:eps => nil) }
     it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => nil) }
-    it { should have_value(:pe_ratio, nil).with(:price => 0).with_stub(:eps => 0) }
+    it { should have_value(:pe_ratio, nil).with(:price => 0).with_stub(:eps => 0.0) }
   end
 
   describe "profit_and_loss" do
@@ -46,5 +46,39 @@ describe Company do
       2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
       Company.all.length.should == 2
     }
+  end
+
+  describe "yearly_sales" do
+    it { should have_value(:yearly_sales, 360).for(4).quarters(:sales_turnover => 90) }
+    it { should have_value(:yearly_sales, 360).for(6).quarters(:sales_turnover => 90) }
+    it { should have_value(:yearly_sales, nil).for(3).quarters(:sales_turnover => 90) }
+  end
+  
+  describe "balance_sheet" do
+    it("should be the latest balance_sheet for company") {
+      expected_balance_sheet = Factory.build(:balance_sheet, :period_ended => Date.parse('Dec 08'))
+      company.balance_sheets << expected_balance_sheet
+      company.balance_sheets << Factory.build(:balance_sheet, :period_ended => Date.parse('Dec 05'))
+      company.save!
+      Factory(:balance_sheet, :period_ended => Date.parse('Dec 09'))
+
+      company.balance_sheet.should == expected_balance_sheet
+    }
+
+    it("should return nil if no balance_sheet data found") {
+      company.balance_sheet.should be_nil
+    }
+  end
+
+  describe "ev_to_sales" do
+    let(:balance_sheet) { Factory.build(:balance_sheet).tap {|b| b.stub_method(:enterprise_value => 100)} }
+    before { company.stub_method(:balance_sheet => balance_sheet)}
+    it { should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => nil) }
+    it {
+      balance_sheet.stub_method(:enterprise_value => nil)
+      should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => 50)
+    }
+    it { should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => 0.0) }
+    it { should have_value(:ev_to_sales, 2).with_stub(:yearly_sales => 50) }
   end
 end
