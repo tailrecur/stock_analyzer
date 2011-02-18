@@ -1,4 +1,6 @@
 class Company < ActiveRecord::Base
+  extend ActiveSupport::Memoizable
+
   belongs_to :sector
 
   has_many :balance_sheets
@@ -10,6 +12,7 @@ class Company < ActiveRecord::Base
   def eps
     quarterly_results.yearly_latest.collect(&:eps).sum
   end
+  memoize :eps
 
   def pe_ratio
     val = price / eps
