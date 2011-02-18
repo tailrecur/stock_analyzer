@@ -5,6 +5,8 @@ class Company < ActiveRecord::Base
   has_many :quarterly_results
   has_many :profit_and_losses
 
+  default_scope where(:active => true)
+
   def eps
     quarterly_results.yearly_latest.collect(&:eps).sum
   end

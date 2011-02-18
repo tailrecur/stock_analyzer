@@ -39,5 +39,10 @@ describe Company do
     it { should have_value(:market_cap, nil).with(:price => 40).with_stub(:profit_and_loss => Factory.build(:profit_and_loss, :issued_shares => nil)) }
   end
 
-
+  describe "default_scope" do
+    it("should retrieve only active companies by default") {
+      2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
+      Company.all.length.should == 2
+    }
+  end
 end

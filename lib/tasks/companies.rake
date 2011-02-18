@@ -54,10 +54,15 @@ namespace :company do
   task :update_price_data_from_bse => :environment do
     day = last_working_day(Date.yesterday)
     url = "http://www.bseindia.com/bhavcopy/eq#{day.strftime("%d%m%y")}_csv.zip"
-    `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
+#    `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
     ActiveRecord::Base.transaction do
       CSV.parse(`unzip -p tmp/bse_data.csv.zip`) do |row|
         company = Company.where(:nse_code => "").find_by_bse_code(row.first)
+        if row.first.strip.eql?("522015")
+          puts row
+          puts company.inspect
+        end
+
         if company
           fill_data(company, [:day_high, :day_low, :price, :volume], row[5..7]+[row[10]])
           company.save!
