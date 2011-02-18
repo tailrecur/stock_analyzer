@@ -14,6 +14,8 @@ describe Company do
     it { should have_value(:pe_ratio, 2.5).with(:price => 50).with_stub(:eps => 20) }
     it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => 20) }
     it { should have_value(:pe_ratio, nil).with(:price => 50).with_stub(:eps => nil) }
+    it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => nil) }
+    it { should have_value(:pe_ratio, nil).with(:price => 0).with_stub(:eps => 0) }
   end
 
   describe "profit_and_loss" do

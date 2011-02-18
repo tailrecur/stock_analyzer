@@ -10,4 +10,8 @@ RSpec::Matchers.define :have_value do |attribute, expected|
   description do
     "be #{expected || "nil"} for #{attribute} when #{@options.inspect}"
   end
+
+  failure_message_for_should do |actual|
+    "expected #{attribute} to be #{expected || 'nil'} but was #{actual.send(attribute)}"
+  end
 end

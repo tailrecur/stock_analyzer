@@ -12,7 +12,8 @@ class Company < ActiveRecord::Base
   end
 
   def pe_ratio
-    price / eps
+    val = price / eps
+    val.nan? ? nil : val
   end
 
   def profit_and_loss
