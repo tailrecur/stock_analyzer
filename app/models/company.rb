@@ -6,8 +6,7 @@ class Company < ActiveRecord::Base
   has_many :profit_and_losses
 
   def eps
-    quarters = quarterly_results[0..3]
-    quarters.inject(0) { |sum, quarterly_result| sum + quarterly_result.eps } if quarters.size == 4
+    quarterly_results.yearly_latest.collect(&:eps).sum
   end
 
   def pe_ratio

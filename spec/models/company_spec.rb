@@ -5,8 +5,8 @@ describe Company do
   subject { company }
 
   describe "eps" do
-    it { should have_eps(20).for(4).quarters }
-    it { should have_eps(20).for(6).quarters }
+    it { should have_eps(100).for(4).quarters }
+    it { should have_eps(180).for(6).quarters }
     it { should have_eps(nil).for(3).quarters }
   end
 
