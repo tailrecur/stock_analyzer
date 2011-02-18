@@ -60,8 +60,7 @@ namespace :company do
         company = Company.where(:nse_code => "").find_by_bse_code(row.first)
         if company
           fill_data(company, [:day_high, :day_low, :price, :volume], row[5..7]+[row[10]])
-#          company.save!
-          puts company.inspect
+          company.save!
         end
         print "."
       end
