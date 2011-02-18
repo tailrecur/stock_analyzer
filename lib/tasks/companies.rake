@@ -109,7 +109,7 @@ namespace :company do
   end
 
   def relevant_companies(model_type)
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])[0..1]
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])
   end
 
   def url_for(company, url)
