@@ -8,4 +8,10 @@ describe Sector do
     Factory.build(:company).tap {|company| company.stub_method(:pe_ratio => 20); sector.companies << company}
     sector.pe_ratio.should == 15
   }
+
+  it("should calculate ev_to_sales") {
+    Factory.build(:company).tap {|company| company.stub_method(:ev_to_sales => 10); sector.companies << company}
+    Factory.build(:company).tap {|company| company.stub_method(:ev_to_sales => 20); sector.companies << company}
+    sector.ev_to_sales.should == 15
+  }
 end

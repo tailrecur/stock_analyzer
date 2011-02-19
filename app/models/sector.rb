@@ -7,4 +7,8 @@ class Sector < ActiveRecord::Base
   def pe_ratio
     companies.collect(&:pe_ratio).average
   end
+
+  def ev_to_sales
+    companies.collect(&:ev_to_sales).average
+  end
 end
