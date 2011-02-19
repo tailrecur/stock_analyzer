@@ -40,4 +40,4 @@ low =0, high = closing_price
 all formulae which pass at 0, move to passable, throw out all which fail
 for all in high_bucket, apply at average price, 
 
-
+PEG ratio

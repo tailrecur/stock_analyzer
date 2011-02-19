@@ -1,15 +1,11 @@
 RSpec::Matchers.define :have_value do |attribute, expected|
   @options = {}
   chain(:with) { |options| @options.merge!(options); options.each { |attr, value| subject.stub_method(attr => value) } }
-  chain(:with_stub) { |options| options.each { |attr, value| subject.stub_method(attr => value) } }
-  chain(:for) { |number| @number = number }
-  chain(:quarters) { |opts={}|
-    (0..(@number-1)).each { |value|
-      subject.quarterly_results << Factory.build(:quarterly_result, {:period_ended => Date.parse("Mar #{10+value}")}.merge(opts))
-    }
-    subject.save!
-  }
-
+  chain(:for) { |attr| @attr = attr }
+  chain(:having_quarter_data) { |options| subject.stub_method(@attr => 4.times.collect { QuarterlyResult.stub_instance(options) }) }
+  chain(:having_trend_data) { |attr, start| subject.stub_method(@attr => (0..5).inject([]) { |array, n|
+    array.tap { |array| array << QuarterlyResult.stub_instance(attr => (start+(n*start)).tap { |cur| start = cur }) } }
+  ) }
 
   match do |actual|
     actual.send(attribute) == expected

@@ -4,19 +4,13 @@ class Sector < ActiveRecord::Base
   has_many :companies
   memoize :companies
 
-  def pe_ratio
-    companies.collect(&:pe_ratio).average
+  def self.averaging_formulae(*formulae)
+    formulae.each { |formula|
+      define_method(formula) {
+        companies.collect(&formula).average
+      }
+    }
   end
 
-  def ev_to_sales
-    companies.collect(&:ev_to_sales).average
-  end
-
-  def ev_to_ebitda
-    companies.collect(&:ev_to_ebitda).average
-  end
-
-  def roe
-    companies.collect(&:roe).average
-  end
+  averaging_formulae :pe_ratio, :ev_to_sales, :ev_to_ebitda, :roe, :roce, :debt_to_equity, :price_to_book_value
 end

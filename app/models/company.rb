@@ -2,14 +2,13 @@ class Company < ActiveRecord::Base
   extend ActiveSupport::Memoizable
 
   belongs_to :sector
-
   has_many :balance_sheets
   has_many :quarterly_results
   has_many :profit_and_losses
 
   delegate :eps, :sales, :ebitda, :depreciation, :other_income, :net_profit, :to => :trailing_year
   delegate :issued_shares, :to => :profit_and_loss
-  delegate :total_share_capital, :enterprise_value, :capital_employed, :yearly_sales, :to => :balance_sheet
+  delegate :total_share_capital, :enterprise_value, :capital_employed, :yearly_sales, :debt_to_equity, :book_value, :to => :balance_sheet
 
   default_scope where(:active => true)
 
@@ -17,19 +16,22 @@ class Company < ActiveRecord::Base
     TrailingYear.new(self)
   end
 
-  memoize :trailing_year
-
   def profit_and_loss
     profit_and_losses.latest
   end
-
-  memoize :profit_and_loss
 
   def balance_sheet
     balance_sheets.latest
   end
 
+  def ordered_quarters
+    quarterly_results.order("period_ended ASC")
+  end
+
+  memoize :trailing_year
+  memoize :profit_and_loss
   memoize :balance_sheet
+  memoize :ordered_quarters
 
   def pe_ratio
     price / eps unless eps.zero?
@@ -61,5 +63,17 @@ class Company < ActiveRecord::Base
 
   def ev_to_ebitda
     enterprise_value / ebitda unless ebitda.zero?
+  end
+
+  def price_to_book_value
+    price / book_value unless book_value.zero?
+  end
+
+  def sales_growth_rate
+    ordered_quarters.collect(&:sales_turnover).trend
+  end
+
+  def expense_growth_rate
+    ordered_quarters.collect(&:total_expenses).trend
   end
 end

@@ -16,4 +16,8 @@ class BalanceSheet < ActiveRecord::Base
   def capital_employed
     total_assets - net_current_liabilities
   end
+
+  def debt_to_equity
+    total_debt / total_share_capital unless total_share_capital.zero?
+  end
 end

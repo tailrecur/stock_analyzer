@@ -19,6 +19,8 @@ describe Company do
     it { should delegate(:enterprise_value).to(:balance_sheet) }
     it { should delegate(:capital_employed).to(:balance_sheet) }
     it { should delegate(:yearly_sales).to(:balance_sheet) }
+    it { should delegate(:debt_to_equity).to(:balance_sheet) }
+    it { should delegate(:book_value).to(:balance_sheet) }
   end
 
   describe "pe_ratio" do
@@ -30,9 +32,9 @@ describe Company do
   end
 
   describe "ebit" do
-    it { should have_value(:ebit, nil).with_stub(:ebitda => nil, :depreciation => 20) }
-    it { should have_value(:ebit, nil).with_stub(:ebitda => 100, :depreciation => nil) }
-    it { should have_value(:ebit, 80).with_stub(:ebitda => 100, :depreciation => 20) }
+    it { should have_value(:ebit, nil).with(:ebitda => nil, :depreciation => 20) }
+    it { should have_value(:ebit, nil).with(:ebitda => 100, :depreciation => nil) }
+    it { should have_value(:ebit, 80).with(:ebitda => 100, :depreciation => 20) }
   end
 
   describe "market_cap" do
@@ -75,16 +77,23 @@ describe Company do
     it { should have_value(:ev_to_ebitda, 3).with(:enterprise_value => 120, :ebitda => 40) }
   end
 
-  describe "ev_to_ebitda" do
-    let(:balance_sheet) { Factory.build(:balance_sheet).tap { |b| b.stub_method(:enterprise_value => 100) } }
-    before { company.stub_method(:balance_sheet => balance_sheet) }
-    it { should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => nil) }
-    it {
-      balance_sheet.stub_method(:enterprise_value => nil)
-      should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => 50)
-    }
-    it { should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => 0.0) }
-    it { should have_value(:ev_to_ebitda, 2).with_stub(:ebitda => 50) }
+  describe "price_to_book_value" do
+    it { should have_value(:price_to_book_value, nil).with(:price => nil, :book_value => 40) }
+    it { should have_value(:price_to_book_value, nil).with(:price => 120, :book_value => nil) }
+    it { should have_value(:price_to_book_value, nil).with(:price => 120, :book_value => 0.0) }
+    it { should have_value(:price_to_book_value, 3).with(:price => 120, :book_value => 40) }
+  end
+
+  describe "sales_growth_rate" do
+    it { should have_value(:sales_growth_rate, nil).with(:ordered_quarters => nil) }
+    it { should have_value(:sales_growth_rate, nil).for(:ordered_quarters).having_trend_data(:sales_turnover,nil) }
+    it { should have_value(:sales_growth_rate, 14380).for(:ordered_quarters).having_trend_data(:sales_turnover,100) }
+  end
+
+  describe "expense_growth_rate" do
+    it { should have_value(:expense_growth_rate, nil).with(:ordered_quarters => nil) }
+    it { should have_value(:expense_growth_rate, nil).for(:ordered_quarters).having_trend_data(:total_expenses,nil) }
+    it { should have_value(:expense_growth_rate, 14380).for(:ordered_quarters).having_trend_data(:total_expenses,100) }
   end
 
   describe "profit_and_loss" do
@@ -124,5 +133,15 @@ describe Company do
       2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
       Company.all.length.should == 2
     }
+  end
+
+  describe "ordered_quarters" do
+    before {
+      (0..4).each { |value| company.quarterly_results << Factory.build(:quarterly_result, :period_ended => Date.parse("Mar '#{10-value}")) }
+      @first = Factory.build(:quarterly_result, :period_ended => Date.parse("Mar '02")).tap { |q| company.quarterly_results << q }
+      company.save!
+    }
+    it { company.ordered_quarters.length.should == 6 }
+    it { company.ordered_quarters.first.should == @first }
   end
 end

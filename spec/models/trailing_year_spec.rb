@@ -6,7 +6,7 @@ describe TrailingYear do
   subject { trailing_year }
 
   describe "quarters" do
-    it {
+    it("should receive the latest 4 quarters") {
       QuarterlyResult.stub_method(:where => QuarterlyResult, :yearly_latest => "foo")
       trailing_year.quarters.should == "foo"
       QuarterlyResult.should have_received(:where).with(:company_id => 2)
@@ -14,10 +14,10 @@ describe TrailingYear do
     }
   end
 
-  it { should have_value(:eps, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:eps => 10) }) }
-  it { should have_value(:sales, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:sales_turnover => 10) }) }
-  it { should have_value(:ebitda, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:operating_profit => 10) }) }
-  it { should have_value(:depreciation, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:depreciation => 10) }) }
-  it { should have_value(:other_income, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:other_income => 10) }) }
-  it { should have_value(:net_profit, 40).with_stub(:quarters => 4.times.collect { QuarterlyResult.stub_instance(:net_profit => 10) }) }
+  it { should have_value(:eps, 40).for(:quarters).having_quarter_data(:eps => 10) }
+  it { should have_value(:sales, 40).for(:quarters).having_quarter_data(:sales_turnover => 10) }
+  it { should have_value(:ebitda, 40).for(:quarters).having_quarter_data(:operating_profit => 10) }
+  it { should have_value(:depreciation, 40).for(:quarters).having_quarter_data(:depreciation => 10) }
+  it { should have_value(:other_income, 40).for(:quarters).having_quarter_data(:other_income => 10) }
+  it { should have_value(:net_profit, 40).for(:quarters).having_quarter_data(:net_profit => 10) }
 end
