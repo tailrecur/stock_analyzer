@@ -7,40 +7,59 @@ class Company < ActiveRecord::Base
   has_many :quarterly_results
   has_many :profit_and_losses
 
+  delegate :eps, :sales, :ebitda, :depreciation, :other_income, :net_profit, :to => :trailing_year
+  delegate :issued_shares, :to => :profit_and_loss
+  delegate :total_share_capital, :enterprise_value, :capital_employed, :yearly_sales, :to => :balance_sheet
+
   default_scope where(:active => true)
+
+  def trailing_year
+    TrailingYear.new(self)
+  end
+
+  memoize :trailing_year
 
   def profit_and_loss
     profit_and_losses.latest
   end
+
   memoize :profit_and_loss
 
   def balance_sheet
     balance_sheets.latest
   end
+
   memoize :balance_sheet
 
-  def trailing_year_quarters
-    quarterly_results.yearly_latest
-  end
-  memoize :trailing_year_quarters
-
-  def eps
-    trailing_year_quarters.collect(&:eps).sum
-  end
-
   def pe_ratio
-    price / eps if not eps.zero?
+    price / eps unless eps.zero?
+  end
+
+  def ebit
+    ebitda - depreciation
   end
 
   def market_cap
-    profit_and_loss.issued_shares * price
+    issued_shares * price
   end
 
-  def yearly_sales
-    trailing_year_quarters.collect(&:sales_turnover).sum
+  def operating_income
+    ebit - other_income
+  end
+
+  def roe
+    net_profit / total_share_capital unless total_share_capital.zero?
+  end
+
+  def roce
+    operating_income / capital_employed unless capital_employed.zero?
   end
 
   def ev_to_sales
-    balance_sheet.enterprise_value / yearly_sales if not yearly_sales.zero?
+    enterprise_value / yearly_sales unless yearly_sales.zero?
+  end
+
+  def ev_to_ebitda
+    enterprise_value / ebitda unless ebitda.zero?
   end
 end

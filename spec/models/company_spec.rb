@@ -4,18 +4,87 @@ describe Company do
   let(:company) { Factory.build(:company) }
   subject { company }
 
-  describe "eps" do
-    it { should have_value(:eps, 40).for(4).quarters(:eps => 10) }
-    it { should have_value(:eps, 40).for(6).quarters(:eps => 10) }
-    it { should have_value(:eps, nil).for(3).quarters(:eps => 10) }
+  describe "delegation" do
+    subject { Company }
+    it { should delegate(:eps).to(:trailing_year) }
+    it { should delegate(:sales).to(:trailing_year) }
+    it { should delegate(:ebitda).to(:trailing_year) }
+    it { should delegate(:depreciation).to(:trailing_year) }
+    it { should delegate(:other_income).to(:trailing_year) }
+    it { should delegate(:net_profit).to(:trailing_year) }
+
+    it { should delegate(:issued_shares).to(:profit_and_loss) }
+
+    it { should delegate(:total_share_capital).to(:balance_sheet) }
+    it { should delegate(:enterprise_value).to(:balance_sheet) }
+    it { should delegate(:capital_employed).to(:balance_sheet) }
+    it { should delegate(:yearly_sales).to(:balance_sheet) }
   end
 
   describe "pe_ratio" do
-    it { should have_value(:pe_ratio, 2.5).with(:price => 50).with_stub(:eps => 20) }
-    it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => 20) }
-    it { should have_value(:pe_ratio, nil).with(:price => 50).with_stub(:eps => nil) }
-    it { should have_value(:pe_ratio, nil).with(:price => nil).with_stub(:eps => nil) }
-    it { should have_value(:pe_ratio, nil).with(:price => 0).with_stub(:eps => 0.0) }
+    it { should have_value(:pe_ratio, nil).with(:price => nil, :eps => 20) }
+    it { should have_value(:pe_ratio, nil).with(:price => 50, :eps => nil) }
+    it { should have_value(:pe_ratio, nil).with(:price => nil, :eps => nil) }
+    it { should have_value(:pe_ratio, nil).with(:price => 0, :eps => 0.0) }
+    it { should have_value(:pe_ratio, 2.5).with(:price => 50.0, :eps => 20) }
+  end
+
+  describe "ebit" do
+    it { should have_value(:ebit, nil).with_stub(:ebitda => nil, :depreciation => 20) }
+    it { should have_value(:ebit, nil).with_stub(:ebitda => 100, :depreciation => nil) }
+    it { should have_value(:ebit, 80).with_stub(:ebitda => 100, :depreciation => 20) }
+  end
+
+  describe "market_cap" do
+    it { should have_value(:market_cap, nil).with(:issued_shares => nil, :price => 40) }
+    it { should have_value(:market_cap, nil).with(:issued_shares => 20, :price => nil) }
+    it { should have_value(:market_cap, 800).with(:issued_shares => 20, :price => 40) }
+  end
+
+  describe "operating_income" do
+    it { should have_value(:operating_income, nil).with(:ebit => nil, :other_income => 40) }
+    it { should have_value(:operating_income, nil).with(:ebit => 400, :other_income => nil) }
+    it { should have_value(:operating_income, 360).with(:ebit => 400, :other_income => 40) }
+  end
+
+  describe "roe" do
+    it { should have_value(:roe, nil).with(:net_profit => nil, :total_share_capital => 40) }
+    it { should have_value(:roe, nil).with(:net_profit => 120, :total_share_capital => nil) }
+    it { should have_value(:roe, nil).with(:net_profit => 120, :total_share_capital => 0.0) }
+    it { should have_value(:roe, 3).with(:net_profit => 120, :total_share_capital => 40) }
+  end
+
+  describe "roce" do
+    it { should have_value(:roce, nil).with(:operating_income => nil, :capital_employed => 40) }
+    it { should have_value(:roce, nil).with(:operating_income => 120, :capital_employed => nil) }
+    it { should have_value(:roce, nil).with(:operating_income => 120, :capital_employed => 0.0) }
+    it { should have_value(:roce, 3).with(:operating_income => 120, :capital_employed => 40) }
+  end
+
+  describe "ev_to_sales" do
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => nil, :yearly_sales => 40) }
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :yearly_sales => nil) }
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :yearly_sales => 0.0) }
+    it { should have_value(:ev_to_sales, 3).with(:enterprise_value => 120, :yearly_sales => 40) }
+  end
+
+  describe "ev_to_ebitda" do
+    it { should have_value(:ev_to_ebitda, nil).with(:enterprise_value => nil, :ebitda => 40) }
+    it { should have_value(:ev_to_ebitda, nil).with(:enterprise_value => 120, :ebitda => nil) }
+    it { should have_value(:ev_to_ebitda, nil).with(:enterprise_value => 120, :ebitda => 0.0) }
+    it { should have_value(:ev_to_ebitda, 3).with(:enterprise_value => 120, :ebitda => 40) }
+  end
+
+  describe "ev_to_ebitda" do
+    let(:balance_sheet) { Factory.build(:balance_sheet).tap { |b| b.stub_method(:enterprise_value => 100) } }
+    before { company.stub_method(:balance_sheet => balance_sheet) }
+    it { should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => nil) }
+    it {
+      balance_sheet.stub_method(:enterprise_value => nil)
+      should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => 50)
+    }
+    it { should have_value(:ev_to_ebitda, nil).with_stub(:ebitda => 0.0) }
+    it { should have_value(:ev_to_ebitda, 2).with_stub(:ebitda => 50) }
   end
 
   describe "profit_and_loss" do
@@ -34,26 +103,6 @@ describe Company do
     }
   end
 
-  describe "market_cap" do
-    it { should have_value(:market_cap, 800).with(:price => 40).with_stub(:profit_and_loss => Factory.build(:profit_and_loss, :issued_shares => 20)) }
-    it { should have_value(:market_cap, nil).with(:price => 40).with_stub(:profit_and_loss => nil) }
-    it { should have_value(:market_cap, nil).with(:price => nil).with_stub(:profit_and_loss => Factory.build(:profit_and_loss, :issued_shares => 20)) }
-    it { should have_value(:market_cap, nil).with(:price => 40).with_stub(:profit_and_loss => Factory.build(:profit_and_loss, :issued_shares => nil)) }
-  end
-
-  describe "default_scope" do
-    it("should retrieve only active companies by default") {
-      2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
-      Company.all.length.should == 2
-    }
-  end
-
-  describe "yearly_sales" do
-    it { should have_value(:yearly_sales, 360).for(4).quarters(:sales_turnover => 90) }
-    it { should have_value(:yearly_sales, 360).for(6).quarters(:sales_turnover => 90) }
-    it { should have_value(:yearly_sales, nil).for(3).quarters(:sales_turnover => 90) }
-  end
-  
   describe "balance_sheet" do
     it("should be the latest balance_sheet for company") {
       expected_balance_sheet = Factory.build(:balance_sheet, :period_ended => Date.parse('Dec 08'))
@@ -70,15 +119,10 @@ describe Company do
     }
   end
 
-  describe "ev_to_sales" do
-    let(:balance_sheet) { Factory.build(:balance_sheet).tap {|b| b.stub_method(:enterprise_value => 100)} }
-    before { company.stub_method(:balance_sheet => balance_sheet)}
-    it { should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => nil) }
-    it {
-      balance_sheet.stub_method(:enterprise_value => nil)
-      should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => 50)
+  describe "default_scope" do
+    it("should retrieve only active companies by default") {
+      2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
+      Company.all.length.should == 2
     }
-    it { should have_value(:ev_to_sales, nil).with_stub(:yearly_sales => 0.0) }
-    it { should have_value(:ev_to_sales, 2).with_stub(:yearly_sales => 50) }
   end
 end

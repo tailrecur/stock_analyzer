@@ -6,4 +6,8 @@ class Object
     puts "Total time: #{finish-start} seconds\n"
     output
   end
+
+  def debug
+    self.tap {|s| puts s }
+  end
 end

@@ -78,7 +78,7 @@ namespace :company do
 
 
   def fill_data(model, attrs, data)
-    attrs.each_with_index { |attr, index| model.send("#{attr}=", data[index].strip) }
+    attrs.each_with_index { |attr, index| model.send("#{attr}=", data[index].strip.gsub(',', '')) }
   end
 
   desc "Update balance_sheets"
@@ -104,7 +104,7 @@ namespace :company do
 
   def process_for(model_type, url)
     relevant_companies(model_type).each do |company|
-      ActiveRecord::Base.transaction do
+#      ActiveRecord::Base.transaction do
         table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
 
         periods = parse_periods(table)
@@ -125,13 +125,15 @@ namespace :company do
             company.send(model_type) << populate_model(model_class.new(:period_ended => period), data, index)
           end
         end
-      end
+#      end
       puts "."
     end
   end
 
   def relevant_companies(model_type)
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [3.months.ago])
+#    [Company.find_by_name("Gujarat Foils")]
+#    Company.all
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [2.days.ago])
   end
 
   def url_for(company, url)
@@ -142,13 +144,13 @@ namespace :company do
     {}.tap do |data|
       table.css("tr[height='22px']").each do |row|
         columns = row.css("td")
-        data[columns.shift.text.strip] = columns.collect { |node| node.text.strip }
+        data[columns.shift.text.strip] = columns.collect { |node| node.text.strip.gsub(',', '') }
       end
     end
   end
 
   def parse_periods(table)
-    table.css(".detb[align='right']").take_while { |node| Date.parse(node.text.strip) rescue nil }.collect { |node| Date.parse(node.text.strip) }
+    table.css(".detb[align='right']").collect { |node| Date.strptime(node.text.strip, "%b '%y") rescue nil }.compact.uniq
   end
 
   def populate_model(model, data, index)

@@ -14,4 +14,16 @@ describe Sector do
     Factory.build(:company).tap {|company| company.stub_method(:ev_to_sales => 20); sector.companies << company}
     sector.ev_to_sales.should == 15
   }
+
+  it("should calculate ev_to_ebitda") {
+    Factory.build(:company).tap {|company| company.stub_method(:ev_to_ebitda => 10); sector.companies << company}
+    Factory.build(:company).tap {|company| company.stub_method(:ev_to_ebitda => 20); sector.companies << company}
+    sector.ev_to_ebitda.should == 15
+  }
+
+  it("should calculate roe") {
+    Factory.build(:company).tap {|company| company.stub_method(:roe => 10); sector.companies << company}
+    Factory.build(:company).tap {|company| company.stub_method(:roe => 20); sector.companies << company}
+    sector.roe.should == 15
+  }
 end

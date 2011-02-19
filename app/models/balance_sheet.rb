@@ -8,4 +8,12 @@ class BalanceSheet < ActiveRecord::Base
   def enterprise_value
     company.market_cap + total_debt + preference_share_capital - cash_and_bank_balance
   end
+
+  def net_current_liabilities
+    current_liabilities + provisions
+  end
+
+  def capital_employed
+    total_assets - net_current_liabilities
+  end
 end
