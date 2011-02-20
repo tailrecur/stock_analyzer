@@ -18,7 +18,7 @@
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="mechanize" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+        <dependency name="inherited-resources" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>

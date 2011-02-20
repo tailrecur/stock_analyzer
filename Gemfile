@@ -7,7 +7,7 @@ gem 'rails', '3.0.4'
 
 gem 'sqlite3'
 gem 'nokogiri'
-gem 'mechanize'
+gem 'inherited_resources'
 
 # Use unicorn as the web server
 gem 'unicorn'
