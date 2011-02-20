@@ -6,7 +6,7 @@ describe TrailingYear do
   subject { trailing_year }
 
   describe "quarters" do
-    it("should receive the latest 4 quarters") {
+    it("should retrieve the latest 4 quarters") {
       QuarterlyResult.stub_method(:where => QuarterlyResult, :yearly_latest => "foo")
       trailing_year.quarters.should == "foo"
       QuarterlyResult.should have_received(:where).with(:company_id => 2)

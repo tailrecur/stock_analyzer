@@ -9,15 +9,13 @@ class Company < ActiveRecord::Base
   has_one :profit_and_loss, :order => "period_ended desc"
   has_one :balance_sheet, :order => "period_ended desc"
 
+  composed_of :trailing_year, :mapping => %w(self company)
+
   delegate :eps, :sales, :ebitda, :depreciation, :other_income, :net_profit, :to => :trailing_year
   delegate :issued_shares, :to => :profit_and_loss
   delegate :total_share_capital, :enterprise_value, :capital_employed, :yearly_sales, :debt_to_equity, :book_value, :to => :balance_sheet
 
   default_scope where(:active => true)
-
-  def trailing_year
-    TrailingYear.new(self)
-  end
 
   memoize :trailing_year
   memoize :profit_and_loss
