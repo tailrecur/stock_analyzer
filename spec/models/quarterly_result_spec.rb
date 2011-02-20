@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe QuarterlyResult do
+  it {should belong_to(:company)}
+
   it("should retrieve data for the latest 4 quarters") {
     (0..5).each { |value| Factory(:quarterly_result, :period_ended => Date.parse("Mar #{10+value}")) }
 

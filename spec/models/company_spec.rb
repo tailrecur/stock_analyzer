@@ -85,25 +85,24 @@ describe Company do
   end
 
   describe "sales_growth_rate" do
-    it { should have_value(:sales_growth_rate, nil).with(:ordered_quarters => nil) }
-    it { should have_value(:sales_growth_rate, nil).for(:ordered_quarters).having_trend_data(:sales_turnover,nil) }
-    it { should have_value(:sales_growth_rate, 14380).for(:ordered_quarters).having_trend_data(:sales_turnover,100) }
+    it { should have_value(:sales_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:sales_growth_rate, nil).for(:profit_and_losses).having_trend_data(:sales_turnover,nil) }
+    it { should have_value(:sales_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:sales_turnover,100) }
   end
 
   describe "expense_growth_rate" do
-    it { should have_value(:expense_growth_rate, nil).with(:ordered_quarters => nil) }
-    it { should have_value(:expense_growth_rate, nil).for(:ordered_quarters).having_trend_data(:total_expenses,nil) }
-    it { should have_value(:expense_growth_rate, 14380).for(:ordered_quarters).having_trend_data(:total_expenses,100) }
+    it { should have_value(:expense_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:expense_growth_rate, nil).for(:profit_and_losses).having_trend_data(:total_expenses,nil) }
+    it { should have_value(:expense_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:total_expenses,100) }
   end
 
   describe "profit_and_loss" do
     it("should be the latest profit_and_loss account for company") {
-      expected_profit_and_loss = Factory.build(:profit_and_loss, :period_ended => Date.parse('Dec 08'))
+      expected_profit_and_loss = Factory.build(:profit_and_loss, :period_ended => Date.parse("Dec '08"))
       company.profit_and_losses << expected_profit_and_loss
-      company.profit_and_losses << Factory.build(:profit_and_loss, :period_ended => Date.parse('Dec 05'))
+      company.profit_and_losses << Factory.build(:profit_and_loss, :period_ended => Date.parse("Dec '05"))
       company.save!
-      Factory(:profit_and_loss, :period_ended => Date.parse('Dec 09'))
-
+      Factory(:profit_and_loss, :period_ended => Date.parse("Dec '09"))
       company.profit_and_loss.should == expected_profit_and_loss
     }
 
@@ -133,15 +132,5 @@ describe Company do
       2.times { Factory(:company, :active => true); Factory(:company, :active => false) }
       Company.all.length.should == 2
     }
-  end
-
-  describe "ordered_quarters" do
-    before {
-      (0..4).each { |value| company.quarterly_results << Factory.build(:quarterly_result, :period_ended => Date.parse("Mar '#{10-value}")) }
-      @first = Factory.build(:quarterly_result, :period_ended => Date.parse("Mar '02")).tap { |q| company.quarterly_results << q }
-      company.save!
-    }
-    it { company.ordered_quarters.length.should == 6 }
-    it { company.ordered_quarters.first.should == @first }
   end
 end

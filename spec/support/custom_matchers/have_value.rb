@@ -4,7 +4,7 @@ RSpec::Matchers.define :have_value do |attribute, expected|
   chain(:for) { |attr| @attr = attr }
   chain(:having_quarter_data) { |options| subject.stub_method(@attr => 4.times.collect { QuarterlyResult.stub_instance(options) }) }
   chain(:having_trend_data) { |attr, start| subject.stub_method(@attr => (0..5).inject([]) { |array, n|
-    array.tap { |array| array << QuarterlyResult.stub_instance(attr => (start+(n*start)).tap { |cur| start = cur }) } }
+    array.tap { |array| array << ProfitAndLoss.stub_instance(attr => (start+(n*start)).tap { |cur| start = cur }) } }
   ) }
 
   match do |actual|

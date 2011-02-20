@@ -4,11 +4,7 @@ describe BalanceSheet do
   let(:balance_sheet) { Factory.build(:balance_sheet) }
   subject { balance_sheet }
 
-  it("should be the latest balance_sheet") {
-    expected_balance_sheet = Factory(:balance_sheet, :period_ended => Date.parse('Dec 08'))
-    Factory(:balance_sheet, :period_ended => Date.parse('Dec 05'))
-    BalanceSheet.latest.should == expected_balance_sheet
-  }
+  it { should belong_to(:company) }
 
   describe "enterprise_value" do
     let(:company) { Company.stub_instance(:market_cap => 60) }
