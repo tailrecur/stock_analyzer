@@ -12,5 +12,5 @@ class Sector < ActiveRecord::Base
     }
   end
 
-  averaging_formulae :pe_ratio, :ev_to_sales, :ev_to_ebitda, :roe, :roce, :debt_to_equity, :price_to_book_value
+  averaging_formulae :pe_ratio, :ev_to_sales, :ev_to_ebitda, :roe, :roce, :debt_to_equity_ratio, :price_to_book_value, :peg_ratio
 end

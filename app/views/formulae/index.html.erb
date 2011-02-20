@@ -1,0 +1,21 @@
+<h1>Listing formulae</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @formulae.each do |formula| %>
+  <tr>
+    <td><%= link_to 'Show', formula %></td>
+    <td><%= link_to 'Edit', edit_formula_path(formula) %></td>
+    <td><%= link_to 'Destroy', formula, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Formula', new_formula_path %>

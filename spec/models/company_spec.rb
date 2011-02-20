@@ -84,6 +84,13 @@ describe Company do
     it { should have_value(:price_to_book_value, 3).with(:price => 120, :book_value => 40) }
   end
 
+  describe "peg_ratio" do
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => nil, :eps_growth_rate => 40) }
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :eps_growth_rate => nil) }
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :eps_growth_rate => 0.0) }
+    it { should have_value(:peg_ratio, 3).with(:pe_ratio => 120, :eps_growth_rate => 40) }
+  end
+
   describe "sales_growth_rate" do
     it { should have_value(:sales_growth_rate, nil).with(:profit_and_losses => nil) }
     it { should have_value(:sales_growth_rate, nil).for(:profit_and_losses).having_trend_data(:sales_turnover,nil) }
@@ -100,6 +107,12 @@ describe Company do
     it { should have_value(:profit_growth_rate, nil).with(:profit_and_losses => nil) }
     it { should have_value(:profit_growth_rate, nil).for(:profit_and_losses).having_trend_data(:pbt,nil) }
     it { should have_value(:profit_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:pbt,100) }
+  end
+
+  describe "eps_growth_rate" do
+    it { should have_value(:eps_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:eps_growth_rate, nil).for(:profit_and_losses).having_trend_data(:eps,nil) }
+    it { should have_value(:eps_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:eps,100) }
   end
 
   describe "profit_and_loss" do

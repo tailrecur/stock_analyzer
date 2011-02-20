@@ -54,4 +54,10 @@ describe BalanceSheet do
     it { should have_value(:ncavps, nil).with(:net_current_assets => 10, :company => company.tap { |c| c.stub_method(:issued_shares => 0.0) }) }
     it { should have_value(:ncavps, 5).with(:net_current_assets => 250, :total_debt => 100, :preference_share_capital => 50, :company => company) }
   end
+
+  describe "net_cash" do
+    it { should have_value(:net_cash, nil).with(:net_current_assets => nil, :total_debt => 10) }
+    it { should have_value(:net_cash, nil).with(:net_current_assets => 10, :investments => nil) }
+    it { should have_value(:net_cash, 15).with(:net_current_assets => 10, :investments => 20, :total_debt => 15) }
+  end
 end

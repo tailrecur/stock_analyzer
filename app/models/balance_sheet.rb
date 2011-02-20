@@ -32,4 +32,8 @@ class BalanceSheet < ActiveRecord::Base
   def ncavps
     (net_current_assets - total_debt - preference_share_capital).divide_by(company.issued_shares)
   end
+
+  def net_cash
+    net_current_assets + investments - total_debt
+  end
 end

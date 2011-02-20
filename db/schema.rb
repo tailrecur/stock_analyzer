@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110218145519) do
+ActiveRecord::Schema.define(:version => 20110220110955) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -83,6 +83,13 @@ ActiveRecord::Schema.define(:version => 20110218145519) do
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
   add_index "companies", ["sector_id"], :name => "index_companies_on_sector_id"
+
+  create_table "formulae", :force => true do |t|
+    t.string   "value"
+    t.integer  "weight",     :default => 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "profit_and_losses", :force => true do |t|
     t.date     "period_ended"

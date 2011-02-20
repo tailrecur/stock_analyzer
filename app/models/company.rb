@@ -69,4 +69,12 @@ class Company < ActiveRecord::Base
   def profit_growth_rate
     profit_and_losses.collect(&:pbt).trend
   end
+
+  def eps_growth_rate
+    profit_and_losses.collect(&:eps).trend
+  end
+
+  def peg_ratio
+    pe_ratio.divide_by(eps_growth_rate)
+  end
 end
