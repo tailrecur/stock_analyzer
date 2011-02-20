@@ -23,7 +23,7 @@ class Company < ActiveRecord::Base
   memoize :balance_sheet
 
   def pe_ratio
-    price / eps unless eps.zero?
+    price.divide_by eps
   end
 
   def ebit
@@ -39,23 +39,23 @@ class Company < ActiveRecord::Base
   end
 
   def roe
-    net_profit / total_share_capital unless total_share_capital.zero?
+    net_profit.divide_by total_share_capital
   end
 
   def roce
-    operating_income / capital_employed unless capital_employed.zero?
+    operating_income.divide_by capital_employed
   end
 
   def ev_to_sales
-    enterprise_value / yearly_sales unless yearly_sales.zero?
+    enterprise_value.divide_by yearly_sales
   end
 
   def ev_to_ebitda
-    enterprise_value / ebitda unless ebitda.zero?
+    enterprise_value.divide_by ebitda
   end
 
   def price_to_book_value
-    price / book_value unless book_value.zero?
+    price.divide_by book_value
   end
 
   def sales_growth_rate
@@ -64,5 +64,9 @@ class Company < ActiveRecord::Base
 
   def expense_growth_rate
     profit_and_losses.collect(&:total_expenses).trend
+  end
+
+  def profit_growth_rate
+    profit_and_losses.collect(&:pbt).trend
   end
 end

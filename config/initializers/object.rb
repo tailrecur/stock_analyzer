@@ -10,4 +10,10 @@ class Object
   def debug
     self.tap {|s| puts s }
   end
+
+  def divide_by other
+    return nil if other.zero?
+    return nil if (other.is_a?(Float) and other.nan?)
+    self / other
+  end
 end

@@ -13,7 +13,19 @@ class BalanceSheet < ActiveRecord::Base
     total_assets - net_current_liabilities
   end
 
-  def debt_to_equity
-    total_debt / total_share_capital unless total_share_capital.zero?
+  def debt_to_equity_ratio
+    (total_debt + preference_share_capital).divide_by(total_share_capital) * 100
+  end
+
+  def debt_to_capital_ratio
+    total_debt.divide_by(total_debt + total_share_capital) * 100
+  end
+
+  def debt_ratio
+    (total_debt + current_liabilities + provisions).divide_by(total_assets - contingent_liabilities) * 100
+  end
+
+  def acid_test_ratio
+    ((total_current_assets - inventories) + fixed_deposits).divide_by(current_liabilities + provisions) * 100
   end
 end

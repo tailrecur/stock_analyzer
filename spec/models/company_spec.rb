@@ -96,6 +96,12 @@ describe Company do
     it { should have_value(:expense_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:total_expenses,100) }
   end
 
+  describe "profit_growth_rate" do
+    it { should have_value(:profit_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:profit_growth_rate, nil).for(:profit_and_losses).having_trend_data(:pbt,nil) }
+    it { should have_value(:profit_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:pbt,100) }
+  end
+
   describe "profit_and_loss" do
     it("should be the latest profit_and_loss account for company") {
       expected_profit_and_loss = Factory.build(:profit_and_loss, :period_ended => Date.parse("Dec '08"))
