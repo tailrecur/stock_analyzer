@@ -1,0 +1,10 @@
+= form_for @sector do |f|
+  -if @sector.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@sector.errors.count, "error")} prohibited this sector from being saved:"
+      %ul
+        - @sector.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'

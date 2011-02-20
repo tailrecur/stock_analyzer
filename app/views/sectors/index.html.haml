@@ -1,0 +1,19 @@
+%h1 Listing sectors
+
+%table
+  %tr
+    %th Name
+    %th
+    %th
+    %th
+
+  - @sectors.each do |sector|
+    %tr
+      %td= sector.name
+      %td= link_to 'Show', sector
+      %td= link_to 'Edit', edit_sector_path(sector)
+      %td= link_to 'Destroy', sector, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Sector', new_sector_path

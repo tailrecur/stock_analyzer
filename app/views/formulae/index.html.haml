@@ -1,0 +1,21 @@
+%h1 Listing formulae
+
+%table
+  %tr
+    %th Value
+    %th Weight
+    %th
+    %th
+    %th
+
+  - @formulae.each do |formula|
+    %tr
+      %td= formula.value
+      %td= formula.weight
+      %td= link_to 'Show', formula
+      %td= link_to 'Edit', edit_formula_path(formula)
+      %td= link_to 'Destroy', formula, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Formula', new_formula_path

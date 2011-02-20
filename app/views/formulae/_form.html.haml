@@ -1,0 +1,10 @@
+= form_for @formula do |f|
+  -if @formula.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@formula.errors.count, "error")} prohibited this formula from being saved:"
+      %ul
+        - @formula.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    = f.submit 'Save'
