@@ -23,6 +23,12 @@ describe Company do
     it { should delegate(:book_value).to(:balance_sheet) }
   end
 
+  it("should instantiate trailing year correctly") {
+    company.save!
+    4.times { Factory(:quarterly_result, :eps => 10, :company_id => company.id) }
+    company.trailing_year.eps.should == 40
+  }
+
   describe "pe_ratio" do
     it { should have_value(:pe_ratio, nil).with(:price => nil, :eps => 20) }
     it { should have_value(:pe_ratio, nil).with(:price => 50, :eps => nil) }

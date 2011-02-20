@@ -1,0 +1,27 @@
+%h1 Listing companies
+
+= will_paginate @companies
+
+%table
+  %tr
+    %th Name
+    %th Sector
+    %th Price
+    %th EPS
+    %th PE Ratio
+    %th
+    %th
+    %th
+
+  - @companies.each do |company|
+    %tr
+      %td= company.name
+      %td= company.sector.name
+      %td= company.price
+      %td= company.eps
+      %td= company.pe_ratio
+      %td= link_to 'Show', company
+      %td= link_to 'Edit', edit_company_path(company)
+%br
+
+= link_to 'New Company', new_company_path

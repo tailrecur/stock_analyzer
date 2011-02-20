@@ -8,7 +8,7 @@ class Object
   end
 
   def debug
-    self.tap {|s| puts s }
+    self.tap {|s| pp s }
   end
 
   def divide_by other

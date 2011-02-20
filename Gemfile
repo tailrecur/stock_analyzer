@@ -8,6 +8,9 @@ gem 'rails', '3.0.4'
 gem 'sqlite3'
 gem 'nokogiri'
 gem 'inherited_resources'
+gem 'will_paginate'
+gem 'haml'
+gem 'haml-rails'
 
 # Use unicorn as the web server
 gem 'unicorn'
