@@ -28,4 +28,8 @@ class BalanceSheet < ActiveRecord::Base
   def acid_test_ratio
     ((total_current_assets - inventories) + fixed_deposits).divide_by(current_liabilities + provisions) * 100
   end
+
+  def ncavps
+    (net_current_assets - total_debt - preference_share_capital).divide_by(company.issued_shares)
+  end
 end

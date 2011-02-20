@@ -46,4 +46,12 @@ describe BalanceSheet do
     it { should have_value(:acid_test_ratio, 100).with(:total_current_assets => 250, :inventories => 150, :fixed_deposits => 20, :current_liabilities => 100, :provisions => 20) }
     it { should have_value(:acid_test_ratio, 75).with(:total_current_assets => 220.0, :inventories => 150, :fixed_deposits => 20, :current_liabilities => 100, :provisions => 20) }
   end
+
+  describe "ncavps" do
+    let(:company) { Company.stub_instance(:issued_shares => 20) }
+    it { should have_value(:ncavps, nil).with(:net_current_assets => nil, :company => company) }
+    it { should have_value(:ncavps, nil).with(:net_current_assets => 10, :company => nil) }
+    it { should have_value(:ncavps, nil).with(:net_current_assets => 10, :company => company.tap { |c| c.stub_method(:issued_shares => 0.0) }) }
+    it { should have_value(:ncavps, 5).with(:net_current_assets => 250, :total_debt => 100, :preference_share_capital => 50, :company => company) }
+  end
 end
