@@ -2,6 +2,8 @@
 
 <table>
   <tr>
+    <th>Value</th>
+    <th>Weight</th>
     <th></th>
     <th></th>
     <th></th>
@@ -9,6 +11,8 @@
 
 <% @formulae.each do |formula| %>
   <tr>
+    <td><%= formula.value %></td>
+    <td><%= formula.weight %></td>
     <td><%= link_to 'Show', formula %></td>
     <td><%= link_to 'Edit', edit_formula_path(formula) %></td>
     <td><%= link_to 'Destroy', formula, :confirm => 'Are you sure?', :method => :delete %></td>

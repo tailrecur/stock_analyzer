@@ -76,6 +76,12 @@
       </requirement>
       <source from="Gemfile" />
     </requirement>
+    <requirement>
+      <requirement>
+        <dependency name="unicorn" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+      </requirement>
+      <source from="Gemfile" />
+    </requirement>
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
@@ -127,6 +133,8 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] actionmailer (v3.0.4, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/actionmailer-3.0.4)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] polyglot (v0.3.1, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/polyglot-0.3.1)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] erubis (v2.6.6, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/erubis-2.6.6)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] unicorn (v3.4.0, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/unicorn-3.4.0)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] kgio (v2.3.2, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/kgio-2.3.2)" level="application" />
   </component>
 </module>
 
