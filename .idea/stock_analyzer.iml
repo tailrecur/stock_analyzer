@@ -18,7 +18,7 @@
     </requirement>
     <requirement>
       <requirement>
-        <dependency name="inherited-resources" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
+        <dependency name="inherited_resources" version="0" bound="GREATER_OR_EQUAL" git="false" path="false" doRequire="true" />
       </requirement>
       <source from="Gemfile" />
     </requirement>
@@ -135,6 +135,9 @@
     <orderEntry type="library" scope="PROVIDED" name="[gem] erubis (v2.6.6, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/erubis-2.6.6)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] unicorn (v3.4.0, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/unicorn-3.4.0)" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="[gem] kgio (v2.3.2, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/kgio-2.3.2)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] inherited_resources (v1.2.1, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/inherited_resources-1.2.1)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] has_scope (v0.5.0, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/has_scope-0.5.0)" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="[gem] responders (v0.6.2, /Users/dlewis/.rvm/gems/ruby-1.9.2-p136/gems/responders-0.6.2)" level="application" />
   </component>
 </module>
 
