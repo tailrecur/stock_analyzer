@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110220110955) do
+ActiveRecord::Schema.define(:version => 20110221175252) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20110220110955) do
     t.string   "isin"
     t.integer  "profit_and_losses_count", :default => 0
     t.boolean  "active",                  :default => true
+    t.integer  "score",                   :default => 0
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true

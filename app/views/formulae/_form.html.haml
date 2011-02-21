@@ -6,5 +6,12 @@
         - @formula.errors.full_messages.each do |msg|
           %li= msg
 
+  .field
+    = f.label :Value
+    = f.text_field :value, :size => 50
+  .field
+    = f.label :Weight
+    = f.text_field :weight, :size => 2
+
   .actions
     = f.submit 'Save'

@@ -1,0 +1,10 @@
+!!!
+%html
+  %head
+    %title Title
+    = stylesheet_link_tag 'stock_analyzer'
+    = yield :styles
+  %body
+    #content
+      = yield
+    = yield :scripts

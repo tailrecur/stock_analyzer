@@ -34,7 +34,7 @@ namespace :company do
   end
 
   desc "Update company prices from NSE"
-  task :update_price_data => :environment do
+  task :update_price_data_from_nse => :environment do
     day = last_working_day(Date.yesterday)
     url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
     `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
@@ -54,7 +54,8 @@ namespace :company do
   task :update_price_data_from_bse => :environment do
     day = last_working_day(Date.yesterday)
     url = "http://www.bseindia.com/bhavcopy/eq#{day.strftime("%d%m%y")}_csv.zip"
-#    `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
+    `cp tmp/bse_data.csv.zip tmp/bse_data.csv.zip.old`
+    `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
     ActiveRecord::Base.transaction do
       CSV.parse(`unzip -p tmp/bse_data.csv.zip`) do |row|
         company = Company.where(:nse_code => "").find_by_bse_code(row.first)
@@ -69,6 +70,16 @@ namespace :company do
         end
         print "."
       end
+    end
+  end
+
+  desc "Update price data and score"
+  task :update_price => [:update_price_data_from_nse, :update_price_data_from_bse] do
+#  task :update_price => :environment do
+    scorer = Scorer.new(Formula.all)
+    Company.includes(:sector).find_each do |company|
+      company.update_attributes!(:score => scorer.calculate_for(company))
+      print "."
     end
   end
 
@@ -105,26 +116,26 @@ namespace :company do
   def process_for(model_type, url)
     relevant_companies(model_type).each do |company|
 #      ActiveRecord::Base.transaction do
-        table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
+      table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
 
-        periods = parse_periods(table)
-        (puts("No data found for #{company.name}") and next) if periods.blank?
+      periods = parse_periods(table)
+      (puts("No data found for #{company.name}") and next) if periods.blank?
 
-        data = parse_data(table)
-        periods.each_with_index do |period, index|
-          model = company.send(model_type).where(:period_ended => period).first
-          if model
-            populate_model(model, data, index)
-            if model.changed?
-              puts "Updating #{model_type} for #{company.name} for year ended #{period}"
-              model.save!
-            end
-          else
-            puts "Creating #{model_type} for #{company.name} for year ended #{period}"
-            model_class = yield(company)
-            company.send(model_type) << populate_model(model_class.new(:period_ended => period), data, index)
+      data = parse_data(table)
+      periods.each_with_index do |period, index|
+        model = company.send(model_type).where(:period_ended => period).first
+        if model
+          populate_model(model, data, index)
+          if model.changed?
+            puts "Updating #{model_type} for #{company.name} for year ended #{period}"
+            model.save!
           end
+        else
+          puts "Creating #{model_type} for #{company.name} for year ended #{period}"
+          model_class = yield(company)
+          company.send(model_type) << populate_model(model_class.new(:period_ended => period), data, index)
         end
+      end
 #      end
       puts "."
     end

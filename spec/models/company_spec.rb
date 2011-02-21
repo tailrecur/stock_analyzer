@@ -18,8 +18,7 @@ describe Company do
     it { should delegate(:total_share_capital).to(:balance_sheet) }
     it { should delegate(:enterprise_value).to(:balance_sheet) }
     it { should delegate(:capital_employed).to(:balance_sheet) }
-    it { should delegate(:yearly_sales).to(:balance_sheet) }
-    it { should delegate(:debt_to_equity).to(:balance_sheet) }
+    it { should delegate(:debt_to_equity_ratio).to(:balance_sheet) }
     it { should delegate(:book_value).to(:balance_sheet) }
   end
 
@@ -70,10 +69,10 @@ describe Company do
   end
 
   describe "ev_to_sales" do
-    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => nil, :yearly_sales => 40) }
-    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :yearly_sales => nil) }
-    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :yearly_sales => 0.0) }
-    it { should have_value(:ev_to_sales, 3).with(:enterprise_value => 120, :yearly_sales => 40) }
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => nil, :sales => 40) }
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :sales => nil) }
+    it { should have_value(:ev_to_sales, nil).with(:enterprise_value => 120, :sales => 0.0) }
+    it { should have_value(:ev_to_sales, 3).with(:enterprise_value => 120, :sales => 40) }
   end
 
   describe "ev_to_ebitda" do

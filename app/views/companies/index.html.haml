@@ -9,6 +9,7 @@
     %th Price
     %th EPS
     %th PE Ratio
+    %th Score
     %th
     %th
     %th
@@ -17,9 +18,10 @@
     %tr
       %td= company.name
       %td= company.sector.name
-      %td= number_with_precision(company.price, :precision => 2)
-      %td= number_with_precision(company.eps, :precision => 2)
+      %td.price= number_with_precision(company.price, :precision => 2)
+      %td.price= number_with_precision(company.eps, :precision => 2)
       %td.price= number_with_precision(company.pe_ratio, :precision => 2)
+      %td= company.score
       %td= link_to 'Show', company
       %td= link_to 'Edit', edit_company_path(company)
 %br

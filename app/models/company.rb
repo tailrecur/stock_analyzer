@@ -11,7 +11,7 @@ class Company < ActiveRecord::Base
 
   delegate :eps, :sales, :ebitda, :depreciation, :other_income, :net_profit, :to => :trailing_year
   delegate :issued_shares, :to => :profit_and_loss
-  delegate :total_share_capital, :enterprise_value, :capital_employed, :yearly_sales, :debt_to_equity, :book_value, :to => :balance_sheet
+  delegate :total_share_capital, :enterprise_value, :capital_employed, :debt_to_equity_ratio, :book_value, :to => :balance_sheet
 
   default_scope where(:active => true)
 
@@ -49,7 +49,7 @@ class Company < ActiveRecord::Base
   end
 
   def ev_to_sales
-    enterprise_value.divide_by yearly_sales
+    enterprise_value.divide_by sales
   end
 
   def ev_to_ebitda
@@ -78,5 +78,9 @@ class Company < ActiveRecord::Base
 
   def peg_ratio
     pe_ratio.divide_by(eps_growth_rate)
+  end
+
+  def <=> other
+    self.score <=> other.score
   end
 end

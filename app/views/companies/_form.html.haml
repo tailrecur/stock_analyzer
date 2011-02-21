@@ -6,5 +6,9 @@
         - @company.errors.full_messages.each do |msg|
           %li= msg
 
+  .field
+    = f.label :Value
+    = f.string :value
+
   .actions
     = f.submit 'Save'
