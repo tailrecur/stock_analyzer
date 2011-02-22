@@ -2,3 +2,21 @@ td.price {
     text-align: right;
     padding-right: 5px;
 }
+
+div.label {
+    clear: left;
+    padding-right: 5px;
+    float: left;
+    width: 10%;
+    text-align:right;
+    font-weight: bold;
+}
+
+div.header {
+    float: left;
+}
+
+div.links {
+    clear: both;
+    padding-top: 20px;
+}

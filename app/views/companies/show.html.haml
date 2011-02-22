@@ -1,6 +1,21 @@
 %p#notice= notice
 
+%h2= @company.name
 
-= link_to 'Edit', edit_company_path(@company)
-\|
-= link_to 'Back', companies_path
+%div
+  %div
+    .label Price:
+    .header= number_with_precision(@company.price, :precision => 2)
+    .label EPS:
+    .header= number_with_precision(@company.eps, :precision => 2)
+    .label PE Ratio:
+    .header= number_with_precision(@company.pe_ratio, :precision => 2)
+    .label Sector:
+    .header= @company.sector.name
+    .label Sector PE Ratio:
+    .header= number_with_precision(@company.sector.pe_ratio, :precision => 2)
+
+  .links
+    = link_to 'Edit', edit_company_path(@company)
+    \|
+    = link_to 'Back', companies_path
