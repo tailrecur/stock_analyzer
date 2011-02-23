@@ -14,6 +14,7 @@ class Object
   def divide_by other
     return nil if other.zero?
     return nil if (other.is_a?(Float) and other.nan?)
+    return nil if (self < 0 or other < 0)
     self / other
   end
 end

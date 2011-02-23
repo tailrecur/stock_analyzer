@@ -77,9 +77,10 @@ namespace :company do
 #  task :update_price => [:update_price_data_from_nse, :update_price_data_from_bse] do
   task :update_price => :environment do
     scorer = Scorer.new(Formula.all)
-    Company.includes(:sector).find_each do |company|
+    Company.includes(:sector).each_with_index do |company, index|
       company.update_attributes!(:score => scorer.calculate_for(company))
       print "."
+      print index if index%100==0
     end
   end
 

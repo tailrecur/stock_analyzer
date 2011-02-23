@@ -3,6 +3,10 @@ class NilClass
     nil
   end
 
+  def to_str
+    "nil"
+  end
+
   def coerce foo
     [nil, nil]
   end

@@ -1,3 +1,5 @@
+Analyze GPA: Gujarat Poly Avx Electronics
+
 update financial data only if new quarter
 Check why acid test ratio is null
 Check why outstanding shares for some companies is zero in quarterly results.
