@@ -1,6 +1,38 @@
 %p#notice= notice
 
+%h2= @sector.name
 
-= link_to 'Edit', edit_sector_path(@sector)
-\|
-= link_to 'Back', sectors_path
+%div
+  .label ROE:
+  .header= number_with_precision(@sector.roe, :precision => 2)
+  .label PE Ratio:
+  .header= number_with_precision(@sector.pe_ratio, :precision => 2)
+  .label PEG Ratio:
+  .header= number_with_precision(@sector.peg_ratio, :precision => 2)
+
+.section
+  %table
+    %tr
+      %th Company
+      %th MC Code
+      %th Score
+      %th Price
+      %th EPS
+      %th PE Ratio
+      %th PEG Ratio
+      %th Market Cap
+    -@sector.companies.order("score DESC").each do |company|
+      %tr
+        %td= company.name
+        %td= company.mc_code
+        %td= company.score
+        %td.price= company.price
+        %td.price= number_with_precision(company.eps, :precision => 2)
+        %td.price= number_with_precision(company.pe_ratio, :precision => 2)
+        %td.price= number_with_precision(company.peg_ratio, :precision => 2)
+        %td.price= number_with_precision(company.market_cap, :precision => 2)
+
+.section
+  = link_to 'Edit', edit_sector_path(@sector)
+  \|
+  = link_to 'Back', sectors_path

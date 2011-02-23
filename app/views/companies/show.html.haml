@@ -14,7 +14,7 @@
   .label PE Ratio:
   .header= number_with_precision(@company.pe_ratio, :precision => 2)
   .label Sector:
-  .header= @company.sector.name
+  .header= link_to @company.sector.name, sector_path(@company.sector)
   .label Sector PE Ratio:
   .header= number_with_precision(@company.sector.pe_ratio, :precision => 2)
 

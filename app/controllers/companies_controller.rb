@@ -9,5 +9,4 @@ class CompaniesController < InheritedResources::Base
     @formulae = Formula.all
     show!
   end
-  protected
 end

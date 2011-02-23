@@ -12,19 +12,16 @@
     %th PE Ratio
     %th Score
     %th
-    %th
-    %th
 
   - @companies.each do |company|
     %tr
       %td= company.id
-      %td= company.name
-      %td= company.sector.name
+      %td= link_to company.name, company_path(company)
+      %td= link_to company.sector.name, sector_path(company.sector)
       %td.price= number_with_precision(company.price, :precision => 2)
       %td.price= number_with_precision(company.eps, :precision => 2)
       %td.price= number_with_precision(company.pe_ratio, :precision => 2)
       %td= company.score
-      %td= link_to 'Show', company
       %td= link_to 'Edit', edit_company_path(company)
 %br
 

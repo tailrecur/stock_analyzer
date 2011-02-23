@@ -76,6 +76,7 @@ namespace :company do
   desc "Update price data and score"
 #  task :update_price => [:update_price_data_from_nse, :update_price_data_from_bse] do
   task :update_price => :environment do
+    puts "Updating company prices and scores"
     scorer = Scorer.new(Formula.all)
     Company.includes(:sector).each_with_index do |company, index|
       company.update_attributes!(:score => scorer.calculate_for(company))

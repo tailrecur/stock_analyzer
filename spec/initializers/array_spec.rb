@@ -12,10 +12,19 @@ describe Array do
   end
 
   describe "trend" do
-    it { [1, 2, 3].trend.should == 1 }
-    it { [1, 3, 4, 8, 10].trend.should == 2 }
-    it { [1.0, 3.0, 4.0, 8.0, 10.0].trend.should == 2.25 }
-    it { [1.0, 3.0, nil, 8.0, 10.0].trend.should == 3 }
-    it { [1.0, 3.0, 0.0/0.0, 8.0, 10.0].trend.should == 3 }
+    it { [1, 2.0, 3].trend.should == 75 }
+    it { [1.0, 3.0, 4.0, 8.0, 10.0].trend.should be_within(0.01).of(89.58) }
+    it { [1.0, 3.0, nil, 8.0, 10.0].trend.should be_within(0.01).of(130.55) }
+    it { [1.0, 3.0, 0.0/0.0, 8.0, 10.0].trend.should be_within(0.01).of(130.55) }
+  end
+
+  describe "median" do
+    it { [1, 2.0, 3].median.should == 2.0 }
+    it { [1.0, 8.0, 3.0, 10.0, 4.0].median.should == 4.0 }
+    it { [1.0, 8.0, 3.0, 10.0, nil, 4.0].median.should == 4.0 }
+    it { [1.0, 8.0, 0.0/0.0, 3.0, 10.0, nil, 4.0].median.should == 4.0 }
+    it { [11.0,1.0, 8.0, 3.0, 10.0, 4.0].median.should == 6.0 }
+    it { [11.0,1.0, nil, 8.0, 3.0, 10.0, 4.0].median.should == 6.0 }
+    it { [11.0, 150, 7.0, 1.0, 8.0, 3.0, 10.0, 4.0, 1, 3.0].median.should == 5.5 }
   end
 end
