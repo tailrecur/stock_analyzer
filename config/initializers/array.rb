@@ -19,7 +19,7 @@ class Array
   end
 
   def cagr
-    ((last / first) ** (1.0 / (length - 1)) - 1) * 100 unless first.zero?
+    ((last / first) ** (1.0 / (length - 1)) - 1) * 100 unless (first.zero? or first < 0 or last < 0)
   end
 
   def cleaned

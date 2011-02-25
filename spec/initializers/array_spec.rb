@@ -35,5 +35,7 @@ describe Array do
     it { [nil, 1.0, 3.0, 10.0, 8.0].cagr.should be_nil }
     it { [1.0, 3.0, 7.0, 8.0, nil].cagr.should be_nil }
     it { [0.0, 1.0, 3.0, 10.0, 8.0].cagr.should be_nil }
+    it { [-0.74, -0.16, 0.10, 0.46, 3.99].cagr.should be_nil }
+    it { [0.74, -0.16, 0.10, 0.46, -3.99].cagr.should be_nil }
   end
 end

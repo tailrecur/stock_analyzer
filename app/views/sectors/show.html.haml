@@ -23,7 +23,7 @@
       %th Market Cap
     -@sector.companies.order("score DESC").each do |company|
       %tr
-        %td= company.name
+        %td= link_to company.name, company_path(company)
         %td= company.mc_code
         %td= company.score
         %td.price= company.price
