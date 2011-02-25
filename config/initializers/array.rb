@@ -7,7 +7,6 @@ class Array
   def median
     valid_values = cleaned.sort
     length = valid_values.length
-
     if length % 2 == 0
       [valid_values[length/2 - 1], valid_values[length/2] ].average
     else
@@ -17,6 +16,10 @@ class Array
 
   def trend
     [].tap { |diffs| cleaned.each_cons(2) { |prev, cur| diffs << (cur - prev).divide_by(prev) } }.average * 100
+  end
+
+  def cagr
+    ((last / first) ** (1.0 / (length - 1)) - 1) * 100 unless first.zero?
   end
 
   def cleaned

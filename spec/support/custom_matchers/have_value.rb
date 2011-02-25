@@ -4,12 +4,17 @@ RSpec::Matchers.define :have_value do |attribute, expected|
   chain(:with) { |options| @options.merge!(options); options.each { |attr, value| subject.stub_method(attr => value) } }
   chain(:for) { |attr| @attr = attr }
   chain(:having_quarter_data) { |options| @related_options = options; subject.stub_method(@attr => 4.times.collect { QuarterlyResult.stub_instance(options) }) }
-  chain(:having_trend_data) { |attr, start| subject.stub_method(@attr => (0..5).inject([]) { |array, n|
-    array.tap { |array| array << ProfitAndLoss.stub_instance(attr => (start+(n*start)).tap { |cur| start = cur }) } }
-  ) }
+  chain(:for_pl_trend_data) { |attr, start|
+    (1..6).each { |n| subject.profit_and_losses << Factory.build(:profit_and_loss, attr => n*start) }
+    subject.save!
+  }
 
   match do |actual|
-    actual.send(attribute) == expected
+    if expected.nil?
+      actual.send(attribute) == nil
+    else
+      (actual.send(attribute) - expected).abs < 0.01
+    end
   end
 
   description do

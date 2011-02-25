@@ -1,6 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
+Formula.destroy_all
 Formula.create!(:value => "company.pe_ratio < sector.pe_ratio")
 Formula.create!(:value => "company.peg_ratio < sector.peg_ratio")
 Formula.create!(:value => "company.ev_to_sales < sector.ev_to_sales")
@@ -10,7 +11,7 @@ Formula.create!(:value => "company.roce > sector.roce")
 Formula.create!(:value => "company.debt_to_equity_ratio < sector.debt_to_equity_ratio")
 Formula.create!(:value => "company.price_to_book_value < sector.price_to_book_value")
 
-#Formula.create!(:value => "company.sales_growth_rate > company.expenses_growth_rate")
+Formula.create!(:value => "company.sales_growth_rate > company.expenses_growth_rate")
 Formula.create!(:value => "company.balance_sheet.debt_to_capital_ratio < 20")
 Formula.create!(:value => "company.price <= 0.67 * company.balance_sheet.ncavps")
 Formula.create!(:value => "company.balance_sheet.net_cash > 0")

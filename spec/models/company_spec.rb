@@ -97,27 +97,27 @@ describe Company do
   end
 
   describe "sales_growth_rate" do
-    it { should have_value(:sales_growth_rate, nil).with(:profit_and_losses => nil) }
-    it { should have_value(:sales_growth_rate, nil).for(:profit_and_losses).having_trend_data(:sales_turnover,nil) }
-    it { should have_value(:sales_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:sales_turnover,100) }
+    it { should have_value(:sales_growth_rate, nil).with(:profit_and_losses_for_growth => nil) }
+    it { should have_value(:sales_growth_rate, nil).for_pl_trend_data(:sales_turnover,nil) }
+    it { should have_value(:sales_growth_rate, 31.60).for_pl_trend_data(:sales_turnover,100) }
   end
 
   describe "expense_growth_rate" do
     it { should have_value(:expense_growth_rate, nil).with(:profit_and_losses => nil) }
-    it { should have_value(:expense_growth_rate, nil).for(:profit_and_losses).having_trend_data(:total_expenses,nil) }
-    it { should have_value(:expense_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:total_expenses,100) }
+    it { should have_value(:expense_growth_rate, nil).for_pl_trend_data(:total_expenses,nil) }
+    it { should have_value(:expense_growth_rate, 31.60).for_pl_trend_data(:total_expenses,100) }
   end
 
   describe "profit_growth_rate" do
     it { should have_value(:profit_growth_rate, nil).with(:profit_and_losses => nil) }
-    it { should have_value(:profit_growth_rate, nil).for(:profit_and_losses).having_trend_data(:pbt,nil) }
-    it { should have_value(:profit_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:pbt,100) }
+    it { should have_value(:profit_growth_rate, nil).for_pl_trend_data(:pbt,nil) }
+    it { should have_value(:profit_growth_rate, 31.6).for_pl_trend_data(:pbt,100) }
   end
 
   describe "eps_growth_rate" do
     it { should have_value(:eps_growth_rate, nil).with(:profit_and_losses => nil) }
-    it { should have_value(:eps_growth_rate, nil).for(:profit_and_losses).having_trend_data(:eps,nil) }
-    it { should have_value(:eps_growth_rate, 14380).for(:profit_and_losses).having_trend_data(:eps,100) }
+    it { should have_value(:eps_growth_rate, nil).for_pl_trend_data(:eps,nil) }
+    it { should have_value(:eps_growth_rate, 31.6).for_pl_trend_data(:eps,100) }
   end
 
   describe "profit_and_loss" do

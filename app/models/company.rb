@@ -4,7 +4,8 @@ class Company < ActiveRecord::Base
   belongs_to :sector
   has_many :balance_sheets, :order => "period_ended asc"
   has_many :quarterly_results, :order => "period_ended asc"
-  has_many :profit_and_losses, :order => "period_ended asc"
+  has_many :profit_and_losses
+  has_many :profit_and_losses_for_growth, :class_name => "ProfitAndLoss", :order => "period_ended desc", :limit => 5
 
   has_one :profit_and_loss, :order => "period_ended desc"
   has_one :balance_sheet, :order => "period_ended desc"
@@ -21,7 +22,7 @@ class Company < ActiveRecord::Base
 
   memoize :trailing_year
   memoize :profit_and_loss
-  memoize :profit_and_losses
+  memoize :profit_and_losses_for_growth
   memoize :balance_sheet
 
   def pe_ratio
@@ -61,19 +62,19 @@ class Company < ActiveRecord::Base
   end
 
   def sales_growth_rate
-    profit_and_losses.collect(&:sales_turnover).trend
+    profit_and_losses_for_growth.collect(&:sales_turnover).reverse.cagr
   end
 
   def expense_growth_rate
-    profit_and_losses.collect(&:total_expenses).trend
+    profit_and_losses_for_growth.collect(&:total_expenses).reverse.cagr
   end
 
   def profit_growth_rate
-    profit_and_losses.collect(&:pbt).trend
+    profit_and_losses_for_growth.collect(&:pbt).reverse.cagr
   end
 
   def eps_growth_rate
-    profit_and_losses.collect(&:eps).trend
+    profit_and_losses_for_growth.collect(&:eps).reverse.cagr
   end
 
   def peg_ratio

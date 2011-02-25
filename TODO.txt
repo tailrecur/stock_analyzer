@@ -1,4 +1,4 @@
-Analyze GPA: Gujarat Poly Avx Electronics
+Bring back formulae related to growth rates
 
 update financial data only if new quarter
 Check why acid test ratio is null
