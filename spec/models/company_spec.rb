@@ -90,10 +90,10 @@ describe Company do
   end
 
   describe "peg_ratio" do
-    it { should have_value(:peg_ratio, nil).with(:pe_ratio => nil, :eps_growth_rate => 40) }
-    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :eps_growth_rate => nil) }
-    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :eps_growth_rate => 0.0) }
-    it { should have_value(:peg_ratio, 3).with(:pe_ratio => 120, :eps_growth_rate => 40) }
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => nil, :profit_growth_rate => 40) }
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :profit_growth_rate => nil) }
+    it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :profit_growth_rate => 0.0) }
+    it { should have_value(:peg_ratio, 3).with(:pe_ratio => 120, :profit_growth_rate => 40) }
   end
 
   describe "sales_growth_rate" do

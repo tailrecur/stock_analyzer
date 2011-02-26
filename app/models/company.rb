@@ -78,7 +78,7 @@ class Company < ActiveRecord::Base
   end
 
   def peg_ratio
-    pe_ratio.divide_by(eps_growth_rate)
+    pe_ratio.divide_by(profit_growth_rate)
   end
 
   def <=> other
