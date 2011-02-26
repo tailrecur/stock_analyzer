@@ -36,3 +36,9 @@ Equity Dividend (%): dividend_percentage
 Book Value (Rs): book_value
 Selling and Admin Expenses: sales_and_admin_expenses
 Profit Before Tax: pbt
+Net Cash From Operating Activities: cash_from_operations
+Net Cash (used in)/fromInvesting Activities: cash_from_investment
+Net Cash (used in)/from Financing Activities: cash_from_financing
+Net (decrease)/increase In Cash and Cash Equivalents: change_in_cce
+Opening Cash & Cash Equivalents: opening_cce
+Closing Cash & Cash Equivalents: closing_cce

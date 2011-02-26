@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110221175252) do
+ActiveRecord::Schema.define(:version => 20110226070546) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -60,6 +60,21 @@ ActiveRecord::Schema.define(:version => 20110221175252) do
 
   add_index "balance_sheets", ["company_id", "period_ended"], :name => "index_balance_sheets_on_company_id_and_period_ended", :unique => true
 
+  create_table "cash_flows", :force => true do |t|
+    t.date     "period_ended"
+    t.float    "cash_from_operations"
+    t.float    "cash_from_investment"
+    t.float    "cash_from_financing"
+    t.float    "change_in_cce"
+    t.float    "opening_cce"
+    t.float    "closing_cce"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cash_flows", ["company_id", "period_ended"], :name => "index_cash_flows_on_company_id_and_period_ended", :unique => true
+
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.string   "mc_code"
@@ -80,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20110221175252) do
     t.integer  "profit_and_losses_count", :default => 0
     t.boolean  "active",                  :default => true
     t.integer  "score",                   :default => 0
+    t.integer  "cash_flows_count",        :default => 0
   end
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true

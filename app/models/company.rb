@@ -3,6 +3,7 @@ class Company < ActiveRecord::Base
 
   belongs_to :sector
   has_many :balance_sheets, :order => "period_ended asc"
+  has_many :cash_flows
   has_many :quarterly_results, :order => "period_ended asc"
   has_many :profit_and_losses
   has_many :profit_and_losses_for_growth, :class_name => "ProfitAndLoss", :order => "period_ended desc", :limit => 5

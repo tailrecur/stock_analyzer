@@ -1,5 +1,7 @@
 .bundle
-db/
+db/production.sqlite3
+db/development.sqlite3
+db/test.sqlite3
 log/*.log
 tmp/
 .idea/

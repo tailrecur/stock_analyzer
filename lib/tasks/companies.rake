@@ -115,6 +115,13 @@ namespace :company do
     end
   end
 
+  desc "Update cash flows"
+  task :update_cash_flows => :environment do
+    process_for(:cash_flows, "http://www.moneycontrol.com/financials/company_name/cash-flow/mc_code") do |company|
+      CashFlow
+    end
+  end
+
   def process_for(model_type, url)
     relevant_companies(model_type).each do |company|
 #      ActiveRecord::Base.transaction do
