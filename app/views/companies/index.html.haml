@@ -2,7 +2,7 @@
 %section.pagination
   = will_paginate @companies
 
-%table
+%table#companies.tablesorter
   %thead
     %tr
       %th Id
@@ -11,7 +11,7 @@
       %th Price
       %th EPS
       %th PE Ratio
-      %th Price/Intrinsic Value
+      %th PI Value
       %th Score
       %th
   %tbody
@@ -29,3 +29,6 @@
 %br
 
 = link_to 'New Company', new_company_path
+
+:javascript
+  $(document).ready(function() { $("#companies").tablesorter({ sortList: [[7,1]]}); } );
