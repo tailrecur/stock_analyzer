@@ -50,6 +50,9 @@ GEM
     inherited_resources (1.2.1)
       has_scope (~> 0.5.0)
       responders (~> 0.6.0)
+    jquery-rails (0.2.7)
+      rails (~> 3.0)
+      thor (~> 0.14.4)
     kgio (2.3.2)
     mail (2.2.15)
       activesupport (>= 2.3.6)
@@ -115,6 +118,7 @@ DEPENDENCIES
   haml
   haml-rails
   inherited_resources
+  jquery-rails
   nokogiri
   not_a_mock
   rails (= 3.0.4)

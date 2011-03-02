@@ -11,6 +11,7 @@ gem 'inherited_resources'
 gem 'will_paginate'
 gem 'haml'
 gem 'haml-rails'
+gem 'jquery-rails'
 gem 'compass'
 
 # Use unicorn as the web server
