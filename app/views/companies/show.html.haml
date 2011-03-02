@@ -18,8 +18,14 @@
   .header.last= number_with_precision(@company.eps, :precision => 2)
   .label PE Ratio:
   .header= number_with_precision(@company.pe_ratio, :precision => 2)
-  .label Sector PE Ratio:
-  .header= number_with_precision(@company.sector.pe_ratio, :precision => 2)
+  .label PEG Ratio:
+  .header= number_with_precision(@company.peg_ratio, :precision => 2)
+  .label Debt Ratio:
+  .header= number_with_precision(@company.debt_ratio, :precision => 2)
+  .label Profit Growth Rate:
+  .header.last= number_with_precision(@company.profit_growth_rate, :precision => 2)
+  .label EV to EBITDA:
+  .header.last= number_with_precision(@company.ev_to_ebitda, :precision => 2)
 
 %section
   %table.tablesorter

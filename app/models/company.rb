@@ -55,7 +55,7 @@ class Company < ActiveRecord::Base
   end
 
   def discount_rate
-    0.1
+    0.12
   end
 
   def fcfs

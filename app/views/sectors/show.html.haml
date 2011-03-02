@@ -5,10 +5,15 @@
 %section
   .label ROE:
   .header= number_with_precision(@sector.roe, :precision => 2)
+  .label ROCE:
+  .header.last= number_with_precision(@sector.roce, :precision => 2)
   .label PE Ratio:
   .header= number_with_precision(@sector.pe_ratio, :precision => 2)
   .label PEG Ratio:
-  .header= number_with_precision(@sector.peg_ratio, :precision => 2)
+  .header.last= number_with_precision(@sector.peg_ratio, :precision => 2)
+  .label Debt Ratio:
+  .header= number_with_precision(@sector.debt_ratio, :precision => 2)
+
 
 %section
   %table.tablesorter
@@ -22,7 +27,10 @@
         %th Debt Ratio
         %th PE Ratio
         %th PEG Ratio
+        %th Growth Rate
         %th PI Value
+        %th ROE
+        %th ROCE
         %th Market Cap
     %tbody
       -@sector.companies.order("score DESC").each do |company|
@@ -35,8 +43,11 @@
           %td.price= number_with_precision(company.debt_ratio, :precision => 2)
           %td.price= number_with_precision(company.pe_ratio, :precision => 2)
           %td.price= number_with_precision(company.peg_ratio, :precision => 2)
+          %td.price= number_with_precision(company.profit_growth_rate, :precision => 2)
           %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
-          %td.price= number_with_precision(company.market_cap, :precision => 2)
+          %td.price= number_with_precision(company.roe, :precision => 2)
+          %td.price= number_with_precision(company.roce, :precision => 2)
+          %td.price= number_with_precision(company.market_cap, :precision => 0)
 
 %section
   = link_to 'Edit', edit_sector_path(@sector)

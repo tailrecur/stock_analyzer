@@ -8,24 +8,32 @@
       %th Id
       %th Name
       %th Sector
+      %th MarketCap
       %th Price
       %th EPS
-      %th PE Ratio
-      %th PI Value
+      %th PE
+      %th PI
+      %th PEG
+      %th Debt
+      %th Growth
       %th Score
-      %th
+      -#%th
   %tbody
     - @companies.each do |company|
       %tr
         %td= company.id
         %td= link_to company.name, company_path(company)
         %td= link_to company.sector.name, sector_path(company.sector)
+        %td.price= number_with_precision(company.market_cap, :precision => 0)
         %td.price= number_with_precision(company.price, :precision => 2)
         %td.price= number_with_precision(company.eps, :precision => 2)
         %td.price= number_with_precision(company.pe_ratio, :precision => 2)
         %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
+        %td.price= number_with_precision(company.peg_ratio, :precision => 2)
+        %td.price= number_with_precision(company.debt_ratio, :precision => 2)
+        %td.price= number_with_precision(company.profit_growth_rate, :precision => 2)
         %td= company.score
-        %td= link_to 'Edit', edit_company_path(company)
+        -#%td= link_to 'Edit', edit_company_path(company)
 %br
 
 = link_to 'New Company', new_company_path
