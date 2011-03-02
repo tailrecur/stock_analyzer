@@ -1,8 +1,8 @@
 %p#notice= notice
 
-%h2= @sector.name
+%header= @sector.name
 
-%div
+%section
   .label ROE:
   .header= number_with_precision(@sector.roe, :precision => 2)
   .label PE Ratio:
@@ -10,33 +10,38 @@
   .label PEG Ratio:
   .header= number_with_precision(@sector.peg_ratio, :precision => 2)
 
-.section
-  %table
-    %tr
-      %th Company
-      %th MC Code
-      %th Score
-      %th Price
-      %th EPS
-      %th Debt Ratio
-      %th PE Ratio
-      %th PEG Ratio
-      %th Price/Intrinsic Value
-      %th Market Cap
-    -@sector.companies.order("score DESC").each do |company|
+%section
+  %table.tablesorter
+    %thead
       %tr
-        %td= link_to company.name, company_path(company)
-        %td= company.mc_code
-        %td= company.score
-        %td.price= company.price
-        %td.price= number_with_precision(company.eps, :precision => 2)
-        %td.price= number_with_precision(company.debt_ratio, :precision => 2)
-        %td.price= number_with_precision(company.pe_ratio, :precision => 2)
-        %td.price= number_with_precision(company.peg_ratio, :precision => 2)
-        %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
-        %td.price= number_with_precision(company.market_cap, :precision => 2)
+        %th Company
+        %th MC Code
+        %th Score
+        %th Price
+        %th EPS
+        %th Debt Ratio
+        %th PE Ratio
+        %th PEG Ratio
+        %th PI Value
+        %th Market Cap
+    %tbody
+      -@sector.companies.order("score DESC").each do |company|
+        %tr
+          %td= link_to company.name, company_path(company)
+          %td= company.mc_code
+          %td= company.score
+          %td.price= company.price
+          %td.price= number_with_precision(company.eps, :precision => 2)
+          %td.price= number_with_precision(company.debt_ratio, :precision => 2)
+          %td.price= number_with_precision(company.pe_ratio, :precision => 2)
+          %td.price= number_with_precision(company.peg_ratio, :precision => 2)
+          %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
+          %td.price= number_with_precision(company.market_cap, :precision => 2)
 
-.section
+%section
   = link_to 'Edit', edit_sector_path(@sector)
   \|
   = link_to 'Back', sectors_path
+
+:javascript
+  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[2,1]]}); } );

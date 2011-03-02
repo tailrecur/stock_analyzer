@@ -2,7 +2,7 @@
 %section.pagination
   = will_paginate @companies
 
-%table#companies.tablesorter
+%table.tablesorter
   %thead
     %tr
       %th Id
@@ -31,4 +31,4 @@
 = link_to 'New Company', new_company_path
 
 :javascript
-  $(document).ready(function() { $("#companies").tablesorter({ sortList: [[7,1]]}); } );
+  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[7,1]]}); } );

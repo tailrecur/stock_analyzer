@@ -1,8 +1,13 @@
 %p#notice= notice
 
-%h2= @company.name
+%header= @company.name
 
-%div
+%section
+  %h2
+    Sector:
+    = link_to @company.sector.name, sector_path(@company.sector)
+
+%section
   .label Score:
   .header= @company.score
   .label MC Code:
@@ -10,29 +15,32 @@
   .label Price:
   .header= number_with_precision(@company.price, :precision => 2)
   .label EPS:
-  .header= number_with_precision(@company.eps, :precision => 2)
+  .header.last= number_with_precision(@company.eps, :precision => 2)
   .label PE Ratio:
   .header= number_with_precision(@company.pe_ratio, :precision => 2)
-  .label Sector:
-  .header= link_to @company.sector.name, sector_path(@company.sector)
   .label Sector PE Ratio:
   .header= number_with_precision(@company.sector.pe_ratio, :precision => 2)
 
-.section
-  %table
-    %tr
-      %th Formula
-      %th Illustration
-      %th Weight
-      %th Result
-    -@formulae.each do |formula|
+%section
+  %table.tablesorter
+    %thead
       %tr
-        %td= formula.value
-        %td= formula.illustrate_for(@company)
-        %td= formula.weight
-        %td= formula.apply_to(@company)
+        %th Formula
+        %th Illustration
+        %th Result
+        %th Weight
+    %tbody
+      -@formulae.each do |formula|
+        %tr
+          %td= formula.value
+          %td= formula.illustrate_for(@company)
+          %td= formula.apply_to(@company)
+          %td= formula.weight
 
-.section
+%section
   = link_to 'Edit', edit_company_path(@company)
   \|
   = link_to 'Back', companies_path
+
+:javascript
+  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
