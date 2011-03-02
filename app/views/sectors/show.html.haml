@@ -18,8 +18,10 @@
       %th Score
       %th Price
       %th EPS
+      %th Debt Ratio
       %th PE Ratio
       %th PEG Ratio
+      %th Price/Intrinsic Value
       %th Market Cap
     -@sector.companies.order("score DESC").each do |company|
       %tr
@@ -28,8 +30,10 @@
         %td= company.score
         %td.price= company.price
         %td.price= number_with_precision(company.eps, :precision => 2)
+        %td.price= number_with_precision(company.debt_ratio, :precision => 2)
         %td.price= number_with_precision(company.pe_ratio, :precision => 2)
         %td.price= number_with_precision(company.peg_ratio, :precision => 2)
+        %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
         %td.price= number_with_precision(company.market_cap, :precision => 2)
 
 .section

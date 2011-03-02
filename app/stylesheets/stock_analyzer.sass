@@ -1,0 +1,38 @@
+@import "blueprint"
+
++blueprint
+
+td.price
+  text-align: right
+  padding-right: 5px
+
+div
+  &.label
+    clear: left
+    padding-right: 5px
+    float: left
+    width: 10%
+    text-align: right
+    font-weight: bold
+  &.header
+    float: left
+
+.section
+  clear: both
+  padding-top: 10px
+
+table
+  +column(24,true)
+  td, th
+    padding-left: 5px
+    padding-right: 5px
+
+header
+  +column(24,true)
+  text-align: center
+  font-size: 3em
+
+section.pagination
+  +column(24,true)
+  text-align: right
+  margin-bottom: 1em

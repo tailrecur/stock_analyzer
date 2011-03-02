@@ -1,28 +1,31 @@
-%h1 Listing companies
-
-= will_paginate @companies
+%header Active Companies
+%section.pagination
+  = will_paginate @companies
 
 %table
-  %tr
-    %th Id
-    %th Name
-    %th Sector
-    %th Price
-    %th EPS
-    %th PE Ratio
-    %th Score
-    %th
-
-  - @companies.each do |company|
+  %thead
     %tr
-      %td= company.id
-      %td= link_to company.name, company_path(company)
-      %td= link_to company.sector.name, sector_path(company.sector)
-      %td.price= number_with_precision(company.price, :precision => 2)
-      %td.price= number_with_precision(company.eps, :precision => 2)
-      %td.price= number_with_precision(company.pe_ratio, :precision => 2)
-      %td= company.score
-      %td= link_to 'Edit', edit_company_path(company)
+      %th Id
+      %th Name
+      %th Sector
+      %th Price
+      %th EPS
+      %th PE Ratio
+      %th Price/Intrinsic Value
+      %th Score
+      %th
+  %tbody
+    - @companies.each do |company|
+      %tr
+        %td= company.id
+        %td= link_to company.name, company_path(company)
+        %td= link_to company.sector.name, sector_path(company.sector)
+        %td.price= number_with_precision(company.price, :precision => 2)
+        %td.price= number_with_precision(company.eps, :precision => 2)
+        %td.price= number_with_precision(company.pe_ratio, :precision => 2)
+        %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
+        %td= company.score
+        %td= link_to 'Edit', edit_company_path(company)
 %br
 
 = link_to 'New Company', new_company_path

@@ -11,11 +11,17 @@ Formula.create!(:value => "company.roce > company.sector.roce")                 
 Formula.create!(:value => "company.debt_to_equity_ratio < company.sector.debt_to_equity_ratio") #1499
 Formula.create!(:value => "company.debt_to_equity_ratio < 30")                    #828
 Formula.create!(:value => "company.price_to_book_value < company.sector.price_to_book_value") #1309
+Formula.create!(:value => "company.operating_cash_to_sales > company.sector.operating_cash_to_sales") #966
 
 #Formula.create!(:value => "company.balance_sheet.total_debt == 0", :weight => 2)
 #Formula.create!(:value => "company.price * 0.67 <= company.balance_sheet.ncavps", :weight => 2)
 Formula.create!(:value => "(company.profit_growth_rate / company.pe_ratio) > 4", :weight => 2)
 Formula.create!(:value => "company.balance_sheet.debt_ratio < 20", :weight => 2)
+
+Formula.create!(:value => "company.price_to_intrinsic_value <= 1", :weight => 10)
+Formula.create!(:value => "company.price_to_intrinsic_value > 1 and company.price_to_intrinsic_value <= 5", :weight => 5)
+#Formula.create!(:value => "company.price_to_intrinsic_value > 3 and company.price_to_intrinsic_value <= 10", :weight => 2)
+Formula.create!(:value => "company.price_to_intrinsic_value > 20", :weight => -5)
 
 Formula.create!(:value => "company.balance_sheet.net_cash < 0", :weight => -1)
 Formula.create!(:value => "company.expense_growth_rate > company.sales_growth_rate", :weight => -1)

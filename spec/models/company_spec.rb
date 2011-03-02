@@ -20,6 +20,9 @@ describe Company do
     it { should delegate(:capital_employed).to(:balance_sheet) }
     it { should delegate(:debt_to_equity_ratio).to(:balance_sheet) }
     it { should delegate(:book_value).to(:balance_sheet) }
+    it { should delegate(:total_equity).to(:balance_sheet) }
+
+    it { should delegate(:operating_cash).to(:cash_flow) }
   end
 
   it("should instantiate trailing year correctly") {
@@ -89,6 +92,13 @@ describe Company do
     it { should have_value(:price_to_book_value, 3).with(:price => 120, :book_value => 40) }
   end
 
+  describe "operating_cash_flow_to_sales" do
+    it { should have_value(:operating_cash_to_sales, nil).with(:operating_cash => nil, :sales => 40) }
+    it { should have_value(:operating_cash_to_sales, nil).with(:operating_cash => 120, :sales => nil) }
+    it { should have_value(:operating_cash_to_sales, nil).with(:operating_cash => 120, :sales => 0.0) }
+    it { should have_value(:operating_cash_to_sales, 3).with(:operating_cash => 120, :sales => 40) }
+  end
+
   describe "peg_ratio" do
     it { should have_value(:peg_ratio, nil).with(:pe_ratio => nil, :profit_growth_rate => 40) }
     it { should have_value(:peg_ratio, nil).with(:pe_ratio => 120, :profit_growth_rate => nil) }
@@ -103,21 +113,28 @@ describe Company do
   end
 
   describe "expense_growth_rate" do
-    it { should have_value(:expense_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:expense_growth_rate, nil).with(:profit_and_losses_for_growth => nil) }
     it { should have_value(:expense_growth_rate, nil).for_pl_trend_data(:total_expenses,nil) }
     it { should have_value(:expense_growth_rate, 31.60).for_pl_trend_data(:total_expenses,100) }
   end
 
   describe "profit_growth_rate" do
-    it { should have_value(:profit_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:profit_growth_rate, nil).with(:profit_and_losses_for_growth => nil) }
     it { should have_value(:profit_growth_rate, nil).for_pl_trend_data(:pbt,nil) }
     it { should have_value(:profit_growth_rate, 31.6).for_pl_trend_data(:pbt,100) }
   end
 
   describe "eps_growth_rate" do
-    it { should have_value(:eps_growth_rate, nil).with(:profit_and_losses => nil) }
+    it { should have_value(:eps_growth_rate, nil).with(:profit_and_losses_for_growth => nil) }
     it { should have_value(:eps_growth_rate, nil).for_pl_trend_data(:eps,nil) }
     it { should have_value(:eps_growth_rate, 31.6).for_pl_trend_data(:eps,100) }
+  end
+
+  describe "free_cash_flow_average" do
+    it("should calculate the average for last 5 years data") do
+      (1..6).each { |n| subject.cash_flows << Factory.build(:cash_flow, :cash_from_operations => n*200, :cash_from_investment => n*-100) }
+      should have_value(:free_cash_flow_average, 333.48).for_pl_trend_data(:equity_dividend, 30)
+    end
   end
 
   describe "profit_and_loss" do
@@ -148,6 +165,22 @@ describe Company do
 
     it("should return nil if no balance_sheet data found") {
       company.balance_sheet.should be_nil
+    }
+  end
+
+  describe "cash_flow" do
+    it("should be the latest cash_flow for company") {
+      expected_cash_flow = Factory.build(:cash_flow, :period_ended => Date.parse('Dec 08'))
+      company.cash_flows << expected_cash_flow
+      company.cash_flows << Factory.build(:cash_flow, :period_ended => Date.parse('Dec 05'))
+      company.save!
+      Factory(:cash_flow, :period_ended => Date.parse('Dec 09'))
+
+      company.cash_flow.should == expected_cash_flow
+    }
+
+    it("should return nil if no cash_flow data found") {
+      company.cash_flow.should be_nil
     }
   end
 

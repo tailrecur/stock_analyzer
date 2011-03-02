@@ -1,4 +1,3 @@
-operating_cash_flow/sales, compare for sector, higher is better
 free_cash_flow = operating_cash_flow - capex - dividend_payout
 free_cash_flow_ratio = free_cash_flow/operating_cash_flow, higher is better
 price/sales

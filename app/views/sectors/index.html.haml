@@ -3,6 +3,7 @@
 %table
   %tr
     %th Name
+    %th Debt Ratio
     %th
     %th
     %th
@@ -10,6 +11,7 @@
   - @sectors.each do |sector|
     %tr
       %td= sector.name
+      %td.price= number_with_precision(sector.debt_ratio, :precision => 2)
       %td= link_to 'Show', sector
       %td= link_to 'Edit', edit_sector_path(sector)
       %td= link_to 'Destroy', sector, :confirm => 'Are you sure?', :method => :delete

@@ -60,4 +60,10 @@ describe BalanceSheet do
     it { should have_value(:net_cash, nil).with(:net_current_assets => 10, :investments => nil) }
     it { should have_value(:net_cash, 15).with(:net_current_assets => 10, :investments => 20, :total_debt => 15) }
   end
+
+  describe "total_equity" do
+    it { should have_value(:total_equity, nil).with(:total_assets => nil, :total_debt => 10) }
+    it { should have_value(:total_equity, nil).with(:total_assets => 10, :total_debt => nil) }
+    it { should have_value(:total_equity, 20).with(:total_assets => 35, :total_debt => 15) }
+  end
 end
