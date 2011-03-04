@@ -12,7 +12,6 @@
       %th Price
       %th EPS
       %th PE
-      %th PI
       %th PEG
       %th Debt
       %th Growth
@@ -28,7 +27,6 @@
         %td.price= number_with_precision(company.price, :precision => 2)
         %td.price= number_with_precision(company.eps, :precision => 2)
         %td.price= number_with_precision(company.pe_ratio, :precision => 2)
-        %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
         %td.price= number_with_precision(company.peg_ratio, :precision => 2)
         %td.price= number_with_precision(company.debt_ratio, :precision => 2)
         %td.price= number_with_precision(company.profit_growth_rate, :precision => 2)
@@ -39,4 +37,4 @@
 = link_to 'New Company', new_company_path
 
 :javascript
-  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[7,1]]}); } );
+  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[10,1]]}); } );

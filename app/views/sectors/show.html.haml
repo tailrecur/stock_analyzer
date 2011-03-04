@@ -28,7 +28,6 @@
         %th PE Ratio
         %th PEG Ratio
         %th Growth Rate
-        %th PI Value
         %th ROE
         %th ROCE
         %th Market Cap
@@ -44,7 +43,6 @@
           %td.price= number_with_precision(company.pe_ratio, :precision => 2)
           %td.price= number_with_precision(company.peg_ratio, :precision => 2)
           %td.price= number_with_precision(company.profit_growth_rate, :precision => 2)
-          %td.price= number_with_precision(company.price_to_intrinsic_value, :precision => 2)
           %td.price= number_with_precision(company.roe, :precision => 2)
           %td.price= number_with_precision(company.roce, :precision => 2)
           %td.price= number_with_precision(company.market_cap, :precision => 0)
