@@ -16,7 +16,7 @@ class Company < ActiveRecord::Base
   delegate :eps, :sales, :ebitda, :depreciation, :other_income, :net_profit, :to => :trailing_year
   delegate :issued_shares, :to => :profit_and_loss
   delegate :operating_cash, :to => :cash_flow
-  delegate :total_share_capital, :enterprise_value, :capital_employed, :debt_to_equity_ratio, :book_value, :total_equity, :debt_ratio, :to => :balance_sheet
+  delegate :total_share_capital, :enterprise_value, :capital_employed, :debt_to_equity_ratio, :book_value, :total_common_equity, :debt_ratio, :to => :balance_sheet
 
   default_scope where(:active => true)
 
@@ -40,7 +40,7 @@ class Company < ActiveRecord::Base
   end
 
   def market_cap
-    issued_shares * price
+    issued_shares * price / 10000000
   end
 
   def operating_income
@@ -81,10 +81,10 @@ class Company < ActiveRecord::Base
   end
 
   def discounted_value
-    if total_equity > 0
-      fcfs.sum + 0.8 * total_equity
+    if total_common_equity > 0
+      fcfs.sum + 0.8 * total_common_equity
     else
-      fcfs.sum + total_equity / 0.8
+      fcfs.sum + total_common_equity / 0.8
     end
   end
 
@@ -94,7 +94,7 @@ class Company < ActiveRecord::Base
   end
 
   def roe
-    net_profit.divide_by total_share_capital
+    (net_profit - profit_and_loss.preference_dividend).divide_by total_common_equity
   end
 
   def roce

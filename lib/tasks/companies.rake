@@ -35,7 +35,7 @@ namespace :company do
 
   desc "Update company prices from NSE"
   task :update_price_data_from_nse => :environment do
-    day = last_working_day(Date.yesterday)
+    day = last_working_day(Date.today)
     url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
     `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
     ActiveRecord::Base.transaction do
@@ -52,7 +52,7 @@ namespace :company do
 
   desc "Update company prices from BSE"
   task :update_price_data_from_bse => :environment do
-    day = last_working_day(Date.yesterday)
+    day = last_working_day(Date.today)
     url = "http://www.bseindia.com/bhavcopy/eq#{day.strftime("%d%m%y")}_csv.zip"
     `cp tmp/bse_data.csv.zip tmp/bse_data.csv.zip.old`
     `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
@@ -74,8 +74,8 @@ namespace :company do
   end
 
   desc "Update price data and score"
-#  task :update_price => [:update_price_data_from_nse, :update_price_data_from_bse] do
-  task :update_price => :environment do
+  task :update_price => [:update_price_data_from_nse, :update_price_data_from_bse] do
+#  task :update_price => :environment do
     puts "\nUpdating company prices and scores"
     scorer = Scorer.new(Formula.all)
     Company.includes(:sector).each_with_index do |company, index|

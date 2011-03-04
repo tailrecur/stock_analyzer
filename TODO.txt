@@ -2,7 +2,6 @@ free_cash_flow = operating_cash_flow - capex - dividend_payout
 free_cash_flow_ratio = free_cash_flow/operating_cash_flow, higher is better
 price/sales
 sales/expenses
-why is EV/EBITDA values wrong compared to Edelweiss
 
 Cash and short-term investments + (0.75 * accounts receivable) + (0.5 * inventory) - total liabilities
 Graham looked for companies whose market values were less than two-thirds of that net-net value.

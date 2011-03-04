@@ -37,7 +37,7 @@ class BalanceSheet < ActiveRecord::Base
     net_current_assets + investments - total_debt
   end
 
-  def total_equity
-    total_assets - total_debt
+  def total_common_equity
+    total_assets - total_debt - preference_share_capital
   end
 end
