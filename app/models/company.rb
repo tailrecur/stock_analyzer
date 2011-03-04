@@ -40,7 +40,7 @@ class Company < ActiveRecord::Base
   end
 
   def market_cap
-    issued_shares * price / 10000000
+    issued_shares * price / 10000000 #in crores
   end
 
   def operating_income

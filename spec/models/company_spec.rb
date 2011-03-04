@@ -20,7 +20,7 @@ describe Company do
     it { should delegate(:capital_employed).to(:balance_sheet) }
     it { should delegate(:debt_to_equity_ratio).to(:balance_sheet) }
     it { should delegate(:book_value).to(:balance_sheet) }
-    it { should delegate(:total_equity).to(:balance_sheet) }
+    it { should delegate(:total_common_equity).to(:balance_sheet) }
 
     it { should delegate(:operating_cash).to(:cash_flow) }
   end
@@ -48,7 +48,7 @@ describe Company do
   describe "market_cap" do
     it { should have_value(:market_cap, nil).with(:issued_shares => nil, :price => 40) }
     it { should have_value(:market_cap, nil).with(:issued_shares => 20, :price => nil) }
-    it { should have_value(:market_cap, 800).with(:issued_shares => 20, :price => 40) }
+    it { should have_value(:market_cap, 28).with(:issued_shares => 200000, :price => 1400.0) }
   end
 
   describe "operating_income" do
@@ -58,10 +58,11 @@ describe Company do
   end
 
   describe "roe" do
-    it { should have_value(:roe, nil).with(:net_profit => nil, :total_share_capital => 40) }
-    it { should have_value(:roe, nil).with(:net_profit => 120, :total_share_capital => nil) }
-    it { should have_value(:roe, nil).with(:net_profit => 120, :total_share_capital => 0.0) }
-    it { should have_value(:roe, 3).with(:net_profit => 120, :total_share_capital => 40) }
+    let(:profit_and_loss) { Factory.build(:profit_and_loss, :preference_dividend => 10)}
+    it { should have_value(:roe, nil).with(:net_profit => nil, :total_common_equity => 40, :profit_and_loss => profit_and_loss) }
+    it { should have_value(:roe, nil).with(:net_profit => 120, :total_common_equity => nil, :profit_and_loss => profit_and_loss) }
+    it { should have_value(:roe, nil).with(:net_profit => 120, :total_common_equity => 0.0, :profit_and_loss => profit_and_loss) }
+    it { should have_value(:roe, 2.75).with(:net_profit => 120, :total_common_equity => 40, :profit_and_loss => profit_and_loss) }
   end
 
   describe "roce" do
