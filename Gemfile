@@ -13,6 +13,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'jquery-rails'
 gem 'compass'
+gem 'delayed_job'
 
 # Use unicorn as the web server
 gem 'unicorn'
@@ -42,6 +43,7 @@ group :test do
   gem 'shoulda'
   gem 'factory_girl_rails'
   gem "not_a_mock"
+  gem "jasmine"
 end
 
 gem 'rspec-rails', :groups => [:development, :test]

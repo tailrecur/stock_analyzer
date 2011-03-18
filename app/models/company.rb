@@ -5,7 +5,7 @@ class Company < ActiveRecord::Base
   has_many :balance_sheets, :order => "period_ended asc"
   has_many :cash_flows
   has_many :cash_flows_for_dcf, :class_name => "CashFlow", :order => "period_ended desc", :limit => 5
-  has_many :quarterly_results, :order => "period_ended asc"
+  has_many :quarterly_results
   has_many :profit_and_losses
   has_many :profit_and_losses_for_growth, :class_name => "ProfitAndLoss", :order => "period_ended desc", :limit => 5
 

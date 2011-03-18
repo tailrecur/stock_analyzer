@@ -12,7 +12,8 @@ class Sector < ActiveRecord::Base
     }
   end
 
-  median_formulae :pe_ratio, :ev_to_sales, :ev_to_ebitda, :roe, :roce, :debt_to_equity_ratio, :price_to_book_value, :peg_ratio, :operating_cash_to_sales, :debt_ratio
+  median_formulae :pe_ratio, :peg_ratio, :debt_ratio,:debt_to_equity_ratio, :price_to_book_value,
+                  :ev_to_sales, :ev_to_ebitda, :roe, :roce, :operating_cash_to_sales
 
 
   def <=> other

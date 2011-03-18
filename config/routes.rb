@@ -1,15 +1,12 @@
 StockAnalyzer::Application.routes.draw do
   resources :formulae
-
-  resources :profit_and_losses
-
-  resources :quarterly_results
-
-  resources :balance_sheets
-
   resources :sectors
 
-  resources :companies
+  resources :companies do
+    resources :profit_and_losses
+    resources :quarterly_results
+    resources :balance_sheets
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

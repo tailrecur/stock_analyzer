@@ -3,7 +3,6 @@ require 'open-uri'
 require 'csv'
 
 namespace :company do
-
   desc "Retrieve latest list of companies and populate database"
   task :retrieve_latest => :environment do
     url = "http://www.moneycontrol.com/portfolio_plus/search_result_div.php"
@@ -35,7 +34,7 @@ namespace :company do
 
   desc "Update company prices from NSE"
   task :update_price_data_from_nse => :environment do
-    day = last_working_day(Date.today)
+    day = last_working_day(Date.yesterday)
     url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
     `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
     ActiveRecord::Base.transaction do
@@ -52,7 +51,7 @@ namespace :company do
 
   desc "Update company prices from BSE"
   task :update_price_data_from_bse => :environment do
-    day = last_working_day(Date.today)
+    day = last_working_day(Date.yesterday)
     url = "http://www.bseindia.com/bhavcopy/eq#{day.strftime("%d%m%y")}_csv.zip"
     `cp tmp/bse_data.csv.zip tmp/bse_data.csv.zip.old`
     `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
@@ -124,11 +123,29 @@ namespace :company do
 
   def process_for(model_type, url)
     relevant_companies(model_type).each do |company|
-#      ActiveRecord::Base.transaction do
+      model_class = yield(company)
+      Importer.new(company.id, model_class).send_later(:process_for, model_type, url)
+    end
+  end
+
+  def relevant_companies(model_type)
+#    [Company.find_by_name("Gujarat Foils")]
+#    Company.limit(10)
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [2.days.ago])
+  end
+
+  class Importer
+    def initialize(company_id, model_class)
+      @company_id = company_id
+      @model_class = model_class
+    end
+
+    def process_for(model_type, url)
+      company = Company.find(@company_id)
       table = Nokogiri::HTML(open(url_for(company, url))).at_css(".table4:nth-of-type(4)")
 
       periods = parse_periods(table)
-      (puts("No data found for #{company.name}") and next) if periods.blank?
+      (puts("No data found for #{company.name}") and return) if periods.blank?
 
       data = parse_data(table)
       periods.each_with_index do |period, index|
@@ -141,51 +158,43 @@ namespace :company do
           end
         else
           puts "Creating #{model_type} for #{company.name} for year ended #{period}"
-          model_class = yield(company)
-          company.send(model_type) << populate_model(model_class.new(:period_ended => period), data, index)
+          company.send(model_type) << populate_model(@model_class.new(:period_ended => period), data, index)
         end
       end
-#      end
       puts "."
     end
-  end
 
-  def relevant_companies(model_type)
-#    [Company.find_by_name("Gujarat Foils")]
-#    Company.all
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [2.days.ago])
-  end
+    def url_for(company, url)
+      url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)
+    end
 
-  def url_for(company, url)
-    url.sub("company_name", company.name.gsub(' ', '').downcase).sub("mc_code", company.mc_code)
-  end
-
-  def parse_data(table)
-    {}.tap do |data|
-      table.css("tr[height='22px']").each do |row|
-        columns = row.css("td")
-        data[columns.shift.text.strip] = columns.collect { |node| node.text.strip.gsub(',', '') }
+    def parse_data(table)
+      {}.tap do |data|
+        table.css("tr[height='22px']").each do |row|
+          columns = row.css("td")
+          data[columns.shift.text.strip] = columns.collect { |node| node.text.strip.gsub(',', '') }
+        end
       end
     end
-  end
 
-  def parse_periods(table)
-    table.css(".detb[align='right']").collect { |node| Date.strptime(node.text.strip, "%b '%y") rescue nil }.compact.uniq
-  end
-
-  def populate_model(model, data, index)
-    data.each do |attr, values|
-      attribute = translated_attribute(attr)
-      model.send("#{attribute}=", values[index]) if model.respond_to?(attribute)
+    def parse_periods(table)
+      table.css(".detb[align='right']").collect { |node| Date.strptime(node.text.strip, "%b '%y") rescue nil }.compact.uniq
     end
-    model
-  end
 
-  def translated_attribute(attribute)
-    non_standard_attributes[attribute] || attribute.gsub(" ", '').underscore
-  end
+    def populate_model(model, data, index)
+      data.each do |attr, values|
+        attribute = translated_attribute(attr)
+        model.send("#{attribute}=", values[index]) if model.respond_to?(attribute)
+      end
+      model
+    end
 
-  def non_standard_attributes
-    @non_standard_attributes ||= YAML::load_file("config/non_standard_attributes.yml")
+    def translated_attribute(attribute)
+      non_standard_attributes[attribute] || attribute.gsub(" ", '').underscore
+    end
+
+    def non_standard_attributes
+      @@non_standard_attributes ||= YAML::load_file("config/non_standard_attributes.yml")
+    end
   end
 end

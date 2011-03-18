@@ -48,5 +48,42 @@
   \|
   = link_to 'Back', companies_path
 
+%section
+  #tabs
+    %ul
+      %li
+        %a{:href => company_quarterly_results_path(@company, :per_page => 5, :format => 'json')} Quarterly Result
+      %li
+        %a{:href => "#tabs-2"} Balance Sheet
+      %li
+        %a{:href => "#tabs-3"} P & L
+      %li
+        %a{:href => "#tabs-3"} Cash Flow
+
 :javascript
   $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
+
+%script{:type => "text/html", :id => "dataTemplate"}
+  %table
+    %thead
+      %tr
+        %th Data
+        = "{{each periods}}"
+        %th= "${this}"
+        = "{{/each}}"
+    = "{{each parsedData}}"
+    %tr
+
+    = "{{/each}}"
+
+:javascript
+  $(function() {
+    $("#tabs").tabs({
+      ajaxOptions: {
+        error: function(xhr, status, index, anchor) {
+          $(anchor.hash).html(
+            "Couldn't load this tab. We'll try to fix this as soon as possible.");
+        }
+      }
+    });
+  });

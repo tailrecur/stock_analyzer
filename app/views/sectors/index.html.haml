@@ -1,21 +1,30 @@
-%h1 Listing sectors
+%header Listing sectors
 
-%table
-  %tr
-    %th Name
-    %th Debt Ratio
-    %th
-    %th
-    %th
+%section
+  %table.tablesorter
+    %thead
+      %tr
+        %th Sector
+        -#%th Score
+        %th Debt Ratio
+        %th PE Ratio
+        %th PEG Ratio
+        %th P/B
+        %th EV/EBITDA
+        %th ROE
+        %th ROCE
+    %tbody
+      -@sectors.each do |sector|
+        %tr
+          %td= link_to sector.name, sector_path(sector)
+          -#%td= sector.score
+          %td.price= number_with_precision(sector.debt_ratio, :precision => 2)
+          %td.price= number_with_precision(sector.pe_ratio, :precision => 2)
+          %td.price= number_with_precision(sector.peg_ratio, :precision => 2)
+          %td.price= number_with_precision(sector.price_to_book_value, :precision => 2)
+          %td.price= number_with_precision(sector.ev_to_ebitda, :precision => 2)
+          %td.price= number_with_precision(sector.roe, :precision => 2)
+          %td.price= number_with_precision(sector.roce, :precision => 2)
 
-  - @sectors.each do |sector|
-    %tr
-      %td= sector.name
-      %td.price= number_with_precision(sector.debt_ratio, :precision => 2)
-      %td= link_to 'Show', sector
-      %td= link_to 'Edit', edit_sector_path(sector)
-      %td= link_to 'Destroy', sector, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New Sector', new_sector_path
+:javascript
+  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[2,1]]}); } );

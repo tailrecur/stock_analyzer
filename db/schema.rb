@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110226070546) do
+ActiveRecord::Schema.define(:version => 20110309170022) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -100,6 +100,21 @@ ActiveRecord::Schema.define(:version => 20110226070546) do
 
   add_index "companies", ["mc_code"], :name => "index_companies_on_mc_code", :unique => true
   add_index "companies", ["sector_id"], :name => "index_companies_on_sector_id"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "formulae", :force => true do |t|
     t.string   "value"
