@@ -6,6 +6,7 @@ StockAnalyzer::Application.routes.draw do
     resources :profit_and_losses
     resources :quarterly_results
     resources :balance_sheets
+    resources :cash_flows
   end
 
   # The priority is based upon order of creation:

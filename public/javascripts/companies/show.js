@@ -13,7 +13,6 @@ $(document).ready(function() {
   ko.applyBindings(viewModel);
 });
 
-
 //$("#tabs").tabs({
 //    select: function(event, ui) {
 //        url = $.data(ui.tab, 'load.tabs');

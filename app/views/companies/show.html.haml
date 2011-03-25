@@ -48,19 +48,17 @@
   \|
   = link_to 'Back', companies_path
 
-#testing Hello World!
-
 %section
   #tabs
     %ul
       %li
         %a{'data-bind' => "click: function() { retrieve('#{company_quarterly_results_path(@company)}') }"} Quarterly Result
       %li
-        %a{:href => company_balance_sheets_path(@company, :per_page => 5, :format => 'json')} Balance Sheet
+        %a{'data-bind' => "click: function() { retrieve('#{company_balance_sheets_path(@company)}') }"} Balance Sheet
       %li
-        %a{:href => "#tabs-3"} P & L
+        %a{'data-bind' => "click: function() { retrieve('#{company_profit_and_losses_path(@company)}') }"} P & L
       %li
-        %a{:href => "#tabs-4"} Cash Flow
+        %a{'data-bind' => "click: function() { retrieve('#{company_cash_flows_path(@company)}') }"} Cash Flow
 
 :javascript
   $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
@@ -71,7 +69,7 @@
       %tr
         %th Data
         = "{{each periods}}"
-        %th= "${this}"
+        %th{:class => :price}= "${this}"
         = "{{/each}}"
       = "{{each rows}}"
       %tr

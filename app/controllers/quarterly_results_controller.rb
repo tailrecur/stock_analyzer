@@ -3,7 +3,7 @@ class QuarterlyResultsController < InheritedResources::Base
 
   belongs_to :company
 
-#  def collection
-#    @quarterly_results ||= end_of_association_chain.order("period_ended DESC").paginate(:page => params[:per_page])
-#  end
+  def collection
+    end_of_association_chain.order("period_ended DESC").limit(params[:per_page])
+  end
 end

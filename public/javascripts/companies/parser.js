@@ -7,6 +7,7 @@ Parser.prototype = {
         this.rows = this.parseData(jsonData).sort(this.sortRow);
         this.periods = this.parsePeriods();
         this.cleanData();
+        this.removeEmptyData();
     },
 
     parsePeriods: function() {
@@ -24,8 +25,16 @@ Parser.prototype = {
         });
     },
 
-    sortRow: function(a,b) {
-      return a.name > b.name ? 1 : -1;
+    removeEmptyData: function() {
+        this.rows = $(this.rows).select(function() {
+            return !$(this.values).all(function() {
+              return this == 0
+            });
+        });
+    },
+
+    sortRow: function(a, b) {
+        return a.name > b.name ? 1 : -1;
     },
 
     parseData: function(jsonData) {
@@ -37,7 +46,7 @@ Parser.prototype = {
                     row = new Row(name);
                     parsedData[name] = row;
                 }
-                row.addValue(value);
+                row.addValue(value ? value : 0);
             });
         });
         var rows = [];

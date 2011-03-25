@@ -1,4 +1,4 @@
-class ProfitAndLossesController < InheritedResources::Base
+class CashFlowsController < InheritedResources::Base
   respond_to :json
 
   belongs_to :company
