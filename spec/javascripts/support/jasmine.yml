@@ -11,11 +11,8 @@
 #   - dist/**/*.js
 #
 src_files:
-  - public/javascripts/prototype.js
-  - public/javascripts/effects.js
-  - public/javascripts/controls.js
-  - public/javascripts/dragdrop.js
-  - public/javascripts/application.js
+  - public/javascripts/jquery.min.js
+  - public/javascripts/jquery.dateFormat-1.0.js
   - public/javascripts/**/*.js
 
 # stylesheets

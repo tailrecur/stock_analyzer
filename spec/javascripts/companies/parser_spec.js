@@ -18,8 +18,8 @@ describe("Parser", function() {
 
     it("should remove unnecessary rows", function() {
         var parser = new Parser(jsonData);
-        var rowNames = parser.rows.collect(function() {
-            return this.name;
+        var rowNames = parser.rows.map(function(row) {
+            return row.name;
         });
         expect(rowNames).not.toContain("created_at");
         expect(rowNames).not.toContain("updated_at");

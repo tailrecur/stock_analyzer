@@ -4,7 +4,7 @@ function Parser(jsonData) {
 
 Parser.prototype = {
     initialize: function(jsonData) {
-        this.rows = this.parseData(jsonData);
+        this.rows = this.parseData(jsonData).sort(this.sortRow);
         this.periods = this.parsePeriods();
         this.cleanData();
     },
@@ -24,9 +24,13 @@ Parser.prototype = {
         });
     },
 
+    sortRow: function(a,b) {
+      return a.name > b.name ? 1 : -1;
+    },
+
     parseData: function(jsonData) {
         var parsedData = {};
-        $.each($.parseJSON(jsonData), function(index, periodicalData) {
+        $.each(jsonData, function(index, periodicalData) {
             $.each(periodicalData, function(name, value) {
                 var row = parsedData[name];
                 if (row == null) {
@@ -41,20 +45,5 @@ Parser.prototype = {
             rows.push(parsedData[row]);
         }
         return $(rows);
-    }
-};
-
-var Row = function(name) {
-    this.name = name;
-    this.values = [];
-
-    this.addValue = function(value) {
-        this.values.push(value);
-    };
-
-    this.hasName = function(names) {
-        $(names).any(function() {
-            return this.name == this;
-        })
     }
 };
