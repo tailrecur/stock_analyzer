@@ -31,8 +31,6 @@
   #tabs
     %ul
       %li
-        %a{:href => '#formula_tab'} Formulae
-      %li
         %a{:href => '#data_tab', 'data-url' => "#{company_quarterly_results_path(@company)}"} Quarterly Result
       %li
         %a{:href => '#data_tab', 'data-url' => "#{company_balance_sheets_path(@company)}"} Balance Sheet
@@ -40,26 +38,14 @@
         %a{:href => '#data_tab', 'data-url' => "#{company_profit_and_losses_path(@company)}"} P & L
       %li
         %a{:href => '#data_tab', 'data-url' => "#{company_cash_flows_path(@company)}"} Cash Flow
+      %li
+        %a{:id => 'formula_link', :href => '#formula_tab', 'data-url' => "#{apply_formulae_path(:company_id => @company.id)}"} Formulae
+
     #data_tab{'data-bind' => 'template: "dataTemplate", visible: periods.length > 0'}
-    #formula_tab
-      %table.tablesorter
-        %thead
-          %tr
-            %th Formula
-            %th Illustration
-            %th Result
-            %th Weight
-        %tbody
-          -@formulae.each do |formula|
-            %tr
-              %td= formula.value
-              %td= formula.illustrate_for(@company)
-              %td= formula.apply_to(@company)
-              %td= formula.weight
+    #formula_tab{'data-bind' => 'template: "formulaTemplate"'}
 
-
-:javascript
-  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
+-#:javascript
+-#  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
 
 %script{:type => "text/html", :id => "dataTemplate"}
   %table
@@ -75,6 +61,23 @@
         = "{{each values}}"
         %td{:class => :price}= "${this}"
         = "{{/each}}"
+      = "{{/each}}"
+
+%script{:type => "text/html", :id => "formulaTemplate"}
+  %table.tablesorter
+    %thead
+      %tr
+        %th Formula
+        %th Illustration
+        %th Result
+        %th Weight
+    %tbody
+      = "{{each formulae}}"
+      %tr
+        %td= "${value}"
+        %td= "${illustration}"
+        %td= "${result}"
+        %td= "${weight}"
       = "{{/each}}"
 
 = javascript_include_tag 'companies/row'

@@ -1,5 +1,9 @@
 StockAnalyzer::Application.routes.draw do
-  resources :formulae
+  resources :formulae do
+    collection do
+      get 'apply'
+    end
+  end
   resources :sectors
 
   resources :companies do
