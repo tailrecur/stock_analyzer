@@ -28,37 +28,35 @@
   .header.last= number_with_precision(@company.ev_to_ebitda, :precision => 2)
 
 %section
-  %table.tablesorter
-    %thead
-      %tr
-        %th Formula
-        %th Illustration
-        %th Result
-        %th Weight
-    %tbody
-      -@formulae.each do |formula|
-        %tr
-          %td= formula.value
-          %td= formula.illustrate_for(@company)
-          %td= formula.apply_to(@company)
-          %td= formula.weight
-
-%section
-  = link_to 'Edit', edit_company_path(@company)
-  \|
-  = link_to 'Back', companies_path
-
-%section
   #tabs
     %ul
       %li
-        %a{'data-bind' => "click: function() { retrieve('#{company_quarterly_results_path(@company)}') }"} Quarterly Result
+        %a{:href => '#formula_tab'} Formulae
       %li
-        %a{'data-bind' => "click: function() { retrieve('#{company_balance_sheets_path(@company)}') }"} Balance Sheet
+        %a{:href => '#data_tab', 'data-url' => "#{company_quarterly_results_path(@company)}"} Quarterly Result
       %li
-        %a{'data-bind' => "click: function() { retrieve('#{company_profit_and_losses_path(@company)}') }"} P & L
+        %a{:href => '#data_tab', 'data-url' => "#{company_balance_sheets_path(@company)}"} Balance Sheet
       %li
-        %a{'data-bind' => "click: function() { retrieve('#{company_cash_flows_path(@company)}') }"} Cash Flow
+        %a{:href => '#data_tab', 'data-url' => "#{company_profit_and_losses_path(@company)}"} P & L
+      %li
+        %a{:href => '#data_tab', 'data-url' => "#{company_cash_flows_path(@company)}"} Cash Flow
+    #data_tab{'data-bind' => 'template: "dataTemplate", visible: periods.length > 0'}
+    #formula_tab
+      %table.tablesorter
+        %thead
+          %tr
+            %th Formula
+            %th Illustration
+            %th Result
+            %th Weight
+        %tbody
+          -@formulae.each do |formula|
+            %tr
+              %td= formula.value
+              %td= formula.illustrate_for(@company)
+              %td= formula.apply_to(@company)
+              %td= formula.weight
+
 
 :javascript
   $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
@@ -83,4 +81,3 @@
 = javascript_include_tag 'companies/parser'
 = javascript_include_tag 'companies/show'
 
-#data{'data-bind' => 'template: "dataTemplate", visible: periods.length > 0'}
