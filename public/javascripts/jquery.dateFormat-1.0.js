@@ -2,7 +2,7 @@
     $.format = (function () {
 
 		function strMonth(value) {
-			switch (parseInt(value)) {
+			switch (parseInt(value, 10)) {
                 case 1:
                     return "Jan";
                 case 2:
