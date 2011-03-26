@@ -44,9 +44,6 @@
     #data_tab{'data-bind' => 'template: "dataTemplate", visible: periods.length > 0'}
     #formula_tab{'data-bind' => 'template: "formulaTemplate"'}
 
--#:javascript
--#  $(document).ready(function() { $("table.tablesorter").tablesorter({ sortList: [[3,1]]}); } );
-
 %script{:type => "text/html", :id => "dataTemplate"}
   %table
     %thead

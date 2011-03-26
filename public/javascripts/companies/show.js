@@ -24,6 +24,7 @@ $(document).ready(function() {
     $.getJSON(url, { format: 'json' }, function(data) {
         $(data).each(function() {
             viewModel.formulae.push(this);
+            $("table.tablesorter").tablesorter({ sortList: [[3,1]]});
         });
     });
 });
