@@ -8,6 +8,7 @@ class Company < ActiveRecord::Base
   has_many :quarterly_results
   has_many :profit_and_losses
   has_many :profit_and_losses_for_growth, :class_name => "ProfitAndLoss", :order => "period_ended desc", :limit => 5
+  has_many :stock_transactions
 
   has_one :profit_and_loss, :order => "period_ended desc"
   has_one :balance_sheet, :order => "period_ended desc"
@@ -30,6 +31,8 @@ class Company < ActiveRecord::Base
   memoize :cash_flows_for_dcf
   memoize :balance_sheet
   memoize :cash_flow
+
+  scope :name_like, lambda {|name| where("name like '%#{name}%'").order("name") }
 
   def pe_ratio
     price.divide_by eps

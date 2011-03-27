@@ -178,4 +178,19 @@ describe Company do
       Company.all.length.should == 2
     }
   end
+
+  describe "scopes" do
+    describe "name_like" do
+      it("should retrieve companies whose name contains search term") do
+        Factory(:company, :name => "test")
+        Factory(:company, :name => "test123")
+        Factory(:company, :name => "123test")
+        Factory(:company, :name => "te123st")
+        Factory(:company, :name => "foo")
+        Factory(:company, :name => "123")
+
+        Company.name_like("123").map(&:name).should == ['123', '123test', 'te123st', 'test123']
+      end
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110309170022) do
+ActiveRecord::Schema.define(:version => 20110327074050) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -212,5 +212,16 @@ ActiveRecord::Schema.define(:version => 20110309170022) do
   end
 
   add_index "sectors", ["name"], :name => "index_sectors_on_name", :unique => true
+
+  create_table "stock_transactions", :force => true do |t|
+    t.string   "type"
+    t.integer  "quantity"
+    t.float    "transaction_price"
+    t.date     "transaction_date"
+    t.string   "exchange"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

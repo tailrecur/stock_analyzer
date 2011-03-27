@@ -1,0 +1,31 @@
+= form_for @stock_transaction do |f|
+  -if @stock_transaction.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@stock_transaction.errors.count, "error")} prohibited this stock_transaction from being saved:"
+      %ul
+        - @stock_transaction.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :type
+    = f.select :type, ['buy','sell']
+  .field
+    = f.label :company
+    = f.text_field :company, "data-url" => "#{companies_path}"
+  .field
+    = f.label :quantity
+    = f.text_field :quantity
+  .field
+    = f.label :transaction_price
+    = f.text_field :transaction_price
+  .field
+    = f.label :transaction_date
+    = f.date_select :transaction_date
+  .field
+    = f.label :exchange
+    = f.select :exchange, ['NSE','BSE']
+  .actions
+    = f.submit 'Save'
+
+= javascript_include_tag 'stock_transactions/form'
+

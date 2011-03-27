@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Type:
+  = @stock_transaction.type
+%p
+  %b Quantity:
+  = @stock_transaction.quantity
+%p
+  %b Transaction price:
+  = @stock_transaction.transaction_price
+%p
+  %b Transaction date:
+  = @stock_transaction.transaction_date
+%p
+  %b Exchange:
+  = @stock_transaction.exchange
+
+= link_to 'Edit', edit_stock_transaction_path(@stock_transaction)
+\|
+= link_to 'Back', stock_transactions_path

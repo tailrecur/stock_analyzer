@@ -1,0 +1,27 @@
+%h1 Listing stock_transactions
+
+%table
+  %tr
+    %th Type
+    %th Quantity
+    %th Transaction price
+    %th Transaction date
+    %th Exchange
+    %th
+    %th
+    %th
+
+  - @stock_transactions.each do |stock_transaction|
+    %tr
+      %td= stock_transaction.type
+      %td= stock_transaction.quantity
+      %td= stock_transaction.transaction_price
+      %td= stock_transaction.transaction_date
+      %td= stock_transaction.exchange
+      %td= link_to 'Show', stock_transaction
+      %td= link_to 'Edit', edit_stock_transaction_path(stock_transaction)
+      %td= link_to 'Destroy', stock_transaction, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Stock transaction', new_stock_transaction_path

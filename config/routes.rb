@@ -5,6 +5,7 @@ StockAnalyzer::Application.routes.draw do
     end
   end
   resources :sectors
+  resources :stock_transactions
 
   resources :companies do
     resources :profit_and_losses
