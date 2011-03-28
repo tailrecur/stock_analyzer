@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(:version => 20110327074050) do
   add_index "sectors", ["name"], :name => "index_sectors_on_name", :unique => true
 
   create_table "stock_transactions", :force => true do |t|
-    t.string   "type"
+    t.string   "transaction_type"
     t.integer  "quantity"
     t.float    "transaction_price"
     t.date     "transaction_date"

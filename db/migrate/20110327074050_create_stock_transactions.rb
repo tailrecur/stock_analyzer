@@ -1,7 +1,7 @@
 class CreateStockTransactions < ActiveRecord::Migration
   def self.up
     create_table :stock_transactions do |t|
-      t.string :type
+      t.string :transaction_type
       t.integer :quantity
       t.float :transaction_price
       t.date :transaction_date

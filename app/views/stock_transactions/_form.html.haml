@@ -7,11 +7,12 @@
           %li= msg
 
   .field
-    = f.label :type
-    = f.select :type, ['buy','sell']
+    = f.label :transaction_type
+    = f.select :transaction_type, ['buy','sell']
   .field
     = f.label :company
     = f.text_field :company, "data-url" => "#{companies_path}"
+    = f.hidden_field :company_id
   .field
     = f.label :quantity
     = f.text_field :quantity

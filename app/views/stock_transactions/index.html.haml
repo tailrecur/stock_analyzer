@@ -2,7 +2,7 @@
 
 %table
   %tr
-    %th Type
+    %th Transaction Type
     %th Quantity
     %th Transaction price
     %th Transaction date
@@ -13,7 +13,7 @@
 
   - @stock_transactions.each do |stock_transaction|
     %tr
-      %td= stock_transaction.type
+      %td= stock_transaction.transaction_type
       %td= stock_transaction.quantity
       %td= stock_transaction.transaction_price
       %td= stock_transaction.transaction_date
