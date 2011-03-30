@@ -2,6 +2,7 @@
 
 %table
   %tr
+    %th Company
     %th Transaction Type
     %th Quantity
     %th Transaction price
@@ -13,6 +14,7 @@
 
   - @stock_transactions.each do |stock_transaction|
     %tr
+      %td= stock_transaction.company.name
       %td= stock_transaction.transaction_type
       %td= stock_transaction.quantity
       %td= stock_transaction.transaction_price

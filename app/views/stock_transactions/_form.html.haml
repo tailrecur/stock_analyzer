@@ -11,7 +11,7 @@
     = f.select :transaction_type, ['buy','sell']
   .field
     = f.label :company
-    = f.text_field :company, "data-url" => "#{companies_path}"
+    %input{:type => :text, :id => :stock_transaction_company, :value => "#{@stock_transaction.company.name}" , :size => 30, "data-url" => "#{companies_path}"}
     = f.hidden_field :company_id
   .field
     = f.label :quantity
