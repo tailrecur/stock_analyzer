@@ -5,12 +5,14 @@ describe StockTransaction do
   subject { stock_transaction }
 
   it{ should belong_to(:company) }
+  it{ should belong_to(:portfolio) }
   it{ should validate_presence_of(:transaction_type) }
   it{ should validate_presence_of(:quantity) }
   it{ should validate_presence_of(:transaction_price) }
   it{ should validate_presence_of(:transaction_date) }
   it{ should validate_presence_of(:exchange) }
   it{ should validate_presence_of(:company) }
+  it{ should validate_presence_of(:portfolio) }
 
   it{ should validate_numericality_of(:transaction_price) }
   it{ should validate_numericality_of(:quantity) }

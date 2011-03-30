@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20110330132900) do
     t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "portfolio"
     t.integer  "portfolio_id"
   end
 

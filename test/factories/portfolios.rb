@@ -2,5 +2,4 @@
 
 Factory.define :portfolio do |f|
   f.name "MyString"
-  f.status "MyString"
 end
