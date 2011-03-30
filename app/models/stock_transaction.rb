@@ -1,8 +1,7 @@
 class StockTransaction < ActiveRecord::Base
-  belongs_to :company
-  belongs_to :portfolio
+  belongs_to :portfolio_stock
 
-  validates_presence_of :transaction_type, :quantity, :transaction_price, :transaction_date, :exchange, :company, :portfolio
+  validates_presence_of :transaction_type, :quantity, :transaction_price, :transaction_date, :exchange, :portfolio_stock
   validates_numericality_of(:quantity, :only_integer => true)
   validates_numericality_of(:transaction_price)
 

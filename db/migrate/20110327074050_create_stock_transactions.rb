@@ -7,8 +7,6 @@ class CreateStockTransactions < ActiveRecord::Migration
       t.date :transaction_date
       t.string :exchange
 
-      t.references :company
-
       t.timestamps
     end
   end

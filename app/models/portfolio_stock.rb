@@ -1,12 +1,8 @@
-class PortfolioStock
-  def initialize portfolio, company
-    @portfolio = portfolio
-    @company = company
-
-    @purchases = StockTransaction.purchases.find_all_by_portfolio_id_and_company_id(portfolio.id, company.id)
-    @sales = StockTransaction.sales.find_all_by_portfolio_id_and_company_id(portfolio.id, company.id)
-  end
-  attr_reader :portfolio, :company, :purchases, :sales
+class PortfolioStock < ActiveRecord::Base
+  belongs_to :portfolio
+  belongs_to :company
+  has_many :purchases, :class_name => "StockTransaction", :conditions => {:transaction_type => StockTransaction::PURCHASE }
+  has_many :sales, :class_name => "StockTransaction", :conditions => {:transaction_type => StockTransaction::SALE }
 
   delegate :name, :price, :to => :company
 
@@ -31,6 +27,7 @@ class PortfolioStock
   end
 
   def realized_profit
+    pp "1" * 100
     (sale_price - cost_price) * sales.collect(&:quantity).sum
   end
 
