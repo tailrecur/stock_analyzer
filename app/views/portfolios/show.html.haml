@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @portfolio.name
+%p
+  %b Start date:
+  = @portfolio.start_date
+
+= link_to 'Edit', edit_portfolio_path(@portfolio)
+\|
+= link_to 'Back', portfolios_path

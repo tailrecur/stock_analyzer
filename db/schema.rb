@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327074050) do
+ActiveRecord::Schema.define(:version => 20110330132900) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -123,6 +123,13 @@ ActiveRecord::Schema.define(:version => 20110327074050) do
     t.datetime "updated_at"
   end
 
+  create_table "portfolios", :force => true do |t|
+    t.string   "name"
+    t.date     "start_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "profit_and_losses", :force => true do |t|
     t.date     "period_ended"
     t.float    "sales_turnover"
@@ -222,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20110327074050) do
     t.integer  "company_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "portfolio_id"
   end
 
 end
