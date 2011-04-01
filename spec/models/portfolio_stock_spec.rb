@@ -6,6 +6,9 @@ describe PortfolioStock do
   let(:portfolio_stock) { PortfolioStock.create!(:portfolio => portfolio, :company => company) }
   subject { portfolio_stock }
 
+  it { should validate_presence_of(:portfolio) }
+  it { should validate_presence_of(:company) }
+
   describe "delegations" do
     its(:name) { should == company.name }
     its(:price) { should == company.price }

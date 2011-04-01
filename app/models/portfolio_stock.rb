@@ -1,6 +1,8 @@
 class PortfolioStock < ActiveRecord::Base
   belongs_to :portfolio
   belongs_to :company
+  validates_presence_of :portfolio, :company
+
   has_many :purchases, :class_name => "StockTransaction", :conditions => {:transaction_type => StockTransaction::PURCHASE }
   has_many :sales, :class_name => "StockTransaction", :conditions => {:transaction_type => StockTransaction::SALE }
 
@@ -27,7 +29,6 @@ class PortfolioStock < ActiveRecord::Base
   end
 
   def realized_profit
-    pp "1" * 100
     (sale_price - cost_price) * sales.collect(&:quantity).sum
   end
 

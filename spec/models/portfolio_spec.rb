@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Portfolio do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it {should have_many(:portfolio_stocks)}
 end

@@ -1,12 +1,38 @@
-%p#notice= notice
+%section
+  %h2= @portfolio.name
 
-%p
-  %b Name:
-  = @portfolio.name
-%p
-  %b Start date:
-  = @portfolio.start_date
+%section
+  .label Start Date:
+  .header= @portfolio.start_date
 
-= link_to 'Edit', edit_portfolio_path(@portfolio)
+%section
+  %table.tablesorter
+    %thead
+      %tr
+        %th Company
+        %th Score
+        %th Cost Price
+        %th Market Price
+        %th Quantity
+        %th Unrealized Profit
+        %th Unrealized Profit %
+        %th Sale Price
+        %th Realized Profit
+        %th Realized Profit %
+    %tbody
+      -@portfolio.portfolio_stocks.each do |stock|
+        %tr
+          %td= link_to stock.company.name, company_path(stock.company)
+          %td= stock.company.score
+          %td.price= number_with_precision(stock.cost_price, :precision => 2)
+          %td.price= stock.company.price
+          %td.price= stock.quantity
+          %td.price= number_with_precision(stock.unrealized_profit, :precision => 2)
+          %td.price= number_with_precision(stock.unrealized_profit_percentage, :precision => 2)
+          %td.price= number_with_precision(stock.sale_price, :precision => 2)
+          %td.price= number_with_precision(stock.realized_profit, :precision => 2)
+          %td.price= number_with_precision(stock.realized_profit_percentage, :precision => 2)
+
+= link_to 'Add Transaction', new_portfolio_stock_transaction_path(@portfolio)
 \|
 = link_to 'Back', portfolios_path

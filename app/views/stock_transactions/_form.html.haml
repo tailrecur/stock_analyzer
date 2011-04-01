@@ -1,4 +1,4 @@
-= form_for @stock_transaction do |f|
+= form_for @stock_transaction, :url => portfolio_stock_transactions_path(@portfolio) do |f|
   -if @stock_transaction.errors.any?
     #error_explanation
       %h2= "#{pluralize(@stock_transaction.errors.count, "error")} prohibited this stock_transaction from being saved:"
@@ -11,8 +11,8 @@
     = f.select :transaction_type, [StockTransaction::PURCHASE,StockTransaction::SALE]
   .field
     = f.label :company
-    %input{:type => :text, :id => :stock_transaction_company, :value => "#{@stock_transaction.company.name}" , :size => 30, "data-url" => "#{companies_path}"}
-    = f.hidden_field :company_id
+    %input{:type => :text, :id => :stock_transaction_company, :value => "#{@stock_transaction.portfolio_stock.company.name}" , :size => 30, "data-url" => "#{companies_path}"}
+    %input{:type => :hidden, :id => :stock_transaction_company_id, :name => :stock_transaction_company_id}
   .field
     = f.label :quantity
     = f.text_field :quantity
