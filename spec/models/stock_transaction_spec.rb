@@ -18,4 +18,15 @@ describe StockTransaction do
 
   it{ should_not allow_value(Date.today + 1).for(:transaction_date).with_message("should be in the past")}
   it{ should allow_value(Date.today).for(:transaction_date)}
+
+  it "should calculate cost_price before save" do
+    stock_transaction.transaction_price = 12.1
+    stock_transaction.quantity = 20
+    stock_transaction.brokerage = 14.3
+    stock_transaction.transaction_charges = 4.3
+    stock_transaction.stamp_duty = 3.2
+
+    stock_transaction.save!
+    stock_transaction.cost_price.should be_within(0.01).of(13.19)
+  end
 end

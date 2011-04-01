@@ -2,7 +2,7 @@
 
 %p
   %b Company:
-  = @stock_transaction.company.name
+  = @stock_transaction.portfolio_stock.company.name
 %p
   %b Transaction Type:
   = @stock_transaction.transaction_type
@@ -19,6 +19,4 @@
   %b Exchange:
   = @stock_transaction.exchange
 
-= link_to 'Edit', edit_stock_transaction_path(@stock_transaction)
-\|
-= link_to 'Back', stock_transactions_path
+= link_to 'Edit', edit_portfolio_stock_transaction_path(@portfolio, @stock_transaction)

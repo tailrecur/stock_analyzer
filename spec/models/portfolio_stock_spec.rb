@@ -43,9 +43,9 @@ describe PortfolioStock do
   describe "#cost_price" do
     before {
       Factory(:stock_purchase, :transaction_price => 21.4, :portfolio_stock => portfolio_stock)
-      Factory(:stock_purchase, :transaction_price => 31.4, :portfolio_stock => portfolio_stock)
+      Factory(:stock_purchase, :transaction_price => 31.4, :portfolio_stock => portfolio_stock, :brokerage => 1, :quantity => 10)
     }
-    its(:cost_price) { should == 26.4 }
+    its(:cost_price) { should be_within(0.01).of(26.45) }
   end
 
   describe "#sale_price" do

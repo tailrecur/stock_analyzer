@@ -13,7 +13,7 @@ class PortfolioStock < ActiveRecord::Base
   end
 
   def cost_price
-    purchases.collect(&:transaction_price).average
+    purchases.collect(&:cost_price).average
   end
 
   def sale_price

@@ -24,7 +24,7 @@
         %tr
           %td= link_to stock.company.name, company_path(stock.company)
           %td= stock.company.score
-          %td.price= number_with_precision(stock.cost_price, :precision => 2)
+          %td.price= link_to number_with_precision(stock.cost_price, :precision => 2), portfolio_stock_transactions_path(@portfolio, :company_id => stock.company)
           %td.price= stock.company.price
           %td.price= stock.quantity
           %td.price= number_with_precision(stock.unrealized_profit, :precision => 2)

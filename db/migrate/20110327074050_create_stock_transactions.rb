@@ -3,7 +3,7 @@ class CreateStockTransactions < ActiveRecord::Migration
     create_table :stock_transactions do |t|
       t.string :transaction_type
       t.integer :quantity
-      t.float :transaction_price
+      t.float :transaction_price, :brokerage, :transaction_charges, :stamp_duty, :cost_price
       t.date :transaction_date
       t.string :exchange
 
