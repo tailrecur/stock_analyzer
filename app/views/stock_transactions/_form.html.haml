@@ -11,8 +11,8 @@
     = f.select :transaction_type, [StockTransaction::PURCHASE,StockTransaction::SALE]
   .field
     = f.label :company
-    %input{:type => :text, :id => :stock_transaction_company, :value => "#{@stock_transaction.portfolio_stock.company.name}" , :size => 30, "data-url" => "#{companies_path}"}
-    %input{:type => :hidden, :id => :stock_transaction_company_id, :name => :stock_transaction_company_id}
+    %input{:type => :text, :id => :company, :value => "#{@stock_transaction.portfolio_stock.company.name}" , :size => 30, "data-url" => "#{companies_path}"}
+    %input{:type => :hidden, :id => :company_id, :name => :company_id}
   .field
     = f.label :quantity
     = f.text_field :quantity
@@ -30,7 +30,7 @@
     = f.text_field :stamp_duty
   .field
     = f.label :transaction_date
-    = f.date_select :transaction_date
+    %input{:type => :text, :id => :transaction_date, :name => "stock_transaction[transaction_date]", :value => "#{@stock_transaction.transaction_date.strftime("%d %b, %Y")}", :size => 10}
   .field
     = f.label :exchange
     = f.select :exchange, ['NSE','BSE']

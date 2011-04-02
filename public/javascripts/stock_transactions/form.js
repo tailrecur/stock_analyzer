@@ -10,16 +10,18 @@ var DataFormatter = function() {
 };
 
 
-$("#stock_transaction_company").autocomplete({
+$("#company").autocomplete({
     source: function(request, response) {
-        var url = $('#stock_transaction_company').attr('data-url');
+        var url = $('#company').attr('data-url');
         $.getJSON(url, {name_like: request.term, format: 'json' }, function(data) {
             response(new DataFormatter().format(data));
         });
     },
     minLength: 2,
     select: function(event, ui) {
-        $('#stock_transaction_company_id').val(ui.item.id);
+        $('#company_id').val(ui.item.id);
         return false;
     }
 });
+
+$("#transaction_date").datepicker({ dateFormat: "dd M, yy", changeMonth: true, changeYear: true });

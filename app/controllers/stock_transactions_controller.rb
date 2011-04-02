@@ -6,7 +6,7 @@ class StockTransactionsController < InheritedResources::Base
   has_scope :company, :as => :company_id
 
   def create
-    portfolio_stock = PortfolioStock.find_or_create_by_portfolio_id_and_company_id(@portfolio, params.delete(:stock_transaction_company_id))
+    portfolio_stock = PortfolioStock.find_or_create_by_portfolio_id_and_company_id(@portfolio, params.delete(:company_id))
     @stock_transaction = StockTransaction.create(params[:stock_transaction].merge(:portfolio_stock => portfolio_stock))
     if @stock_transaction.save
       redirect_to portfolio_url(@portfolio)
