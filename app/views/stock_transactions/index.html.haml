@@ -26,7 +26,7 @@
       %td.price= number_with_precision(stock_transaction.brokerage, :precision => 2)
       %td.price= number_with_precision(stock_transaction.transaction_charges, :precision => 2)
       %td.price= number_with_precision(stock_transaction.stamp_duty, :precision => 2)
-      %td= stock_transaction.transaction_date
+      %td= stock_transaction.transaction_date.strftime("%d %b, %Y")
       %td= stock_transaction.exchange
       %td= link_to 'Edit', edit_portfolio_stock_transaction_path(stock_transaction, :portfolio_id => @portfolio.id)
       %td= link_to 'Destroy', portfolio_stock_transaction_path(stock_transaction, :portfolio_id => @portfolio.id), :confirm => 'Are you sure?', :method => :delete

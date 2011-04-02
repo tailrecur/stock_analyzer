@@ -11,6 +11,9 @@
     = f.text_field :name
   .field
     = f.label :start_date
-    = f.date_select :start_date
+    %input{:type => :text, :id => :start_date, :name => "portfolio[start_date]", :value => "#{@portfolio.start_date.strftime("%d %b, %Y")}"}
   .actions
     = f.submit 'Save'
+
+:javascript
+  $("#start_date").datepicker({ dateFormat: "dd M, yy", changeMonth: true, changeYear: true });

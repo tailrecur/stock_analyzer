@@ -30,7 +30,7 @@
     = f.text_field :stamp_duty
   .field
     = f.label :transaction_date
-    %input{:type => :text, :id => :transaction_date, :name => "stock_transaction[transaction_date]", :value => "#{@stock_transaction.transaction_date.strftime("%d %b, %Y")}", :size => 10}
+    %input{:type => :text, :id => :transaction_date, :name => "stock_transaction[transaction_date]", :value => "#{@stock_transaction.transaction_date.strftime("%d %b, %Y")}"}
   .field
     = f.label :exchange
     = f.select :exchange, ['NSE','BSE']

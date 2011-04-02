@@ -10,7 +10,7 @@
   - @portfolios.each do |portfolio|
     %tr
       %td= link_to portfolio.name, portfolio
-      %td= portfolio.start_date
+      %td= portfolio.start_date.strftime("%d %b, %Y")
       %td= link_to 'Destroy', portfolio, :confirm => 'Are you sure?', :method => :delete
 
 %br
