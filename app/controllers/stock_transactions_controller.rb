@@ -20,6 +20,10 @@ class StockTransactionsController < InheritedResources::Base
   end
 
   def update
-    update! { portfolio_stock_transaction_path(@portfolio)}
+    update! { portfolio_stock_transaction_path(@portfolio) }
+  end
+
+  def destroy
+    destroy! { portfolio_stock_transactions_path(@portfolio) }
   end
 end

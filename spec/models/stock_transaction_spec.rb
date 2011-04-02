@@ -10,7 +10,7 @@ describe StockTransaction do
   it{ should validate_presence_of(:transaction_price) }
   it{ should validate_presence_of(:transaction_date) }
   it{ should validate_presence_of(:exchange) }
-  it{ should validate_presence_of(:portfolio_stock) }
+  it{ should validate_presence_of(:portfolio_stock_id) }
 
   it{ should validate_numericality_of(:transaction_price) }
   it{ should validate_numericality_of(:quantity) }
@@ -20,6 +20,7 @@ describe StockTransaction do
   it{ should allow_value(Date.today).for(:transaction_date)}
 
   it "should calculate cost_price before save" do
+    stock_transaction.portfolio_stock_id = 3
     stock_transaction.transaction_price = 12.1
     stock_transaction.quantity = 20
     stock_transaction.brokerage = 14.3

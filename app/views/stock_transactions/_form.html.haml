@@ -1,4 +1,4 @@
-= form_for @stock_transaction, :url => portfolio_stock_transaction_path(@portfolio, @stock_transaction) do |f|
+= form_for @stock_transaction, :url => @stock_transaction.new_record? ? portfolio_stock_transactions_path(@portfolio) : portfolio_stock_transaction_path(@portfolio, @stock_transaction) do |f|
   -if @stock_transaction.errors.any?
     #error_explanation
       %h2= "#{pluralize(@stock_transaction.errors.count, "error")} prohibited this stock_transaction from being saved:"

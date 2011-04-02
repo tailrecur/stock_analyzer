@@ -20,12 +20,12 @@
     %tr
       %td= stock_transaction.portfolio_stock.company.name
       %td= stock_transaction.transaction_type
-      %td= stock_transaction.quantity
-      %td= stock_transaction.cost_price
-      %td= stock_transaction.transaction_price
-      %td= stock_transaction.brokerage
-      %td= stock_transaction.transaction_charges
-      %td= stock_transaction.stamp_duty
+      %td.price= stock_transaction.quantity
+      %td.price= number_with_precision(stock_transaction.cost_price, :precision => 2)
+      %td.price= number_with_precision(stock_transaction.transaction_price, :precision => 2)
+      %td.price= number_with_precision(stock_transaction.brokerage, :precision => 2)
+      %td.price= number_with_precision(stock_transaction.transaction_charges, :precision => 2)
+      %td.price= number_with_precision(stock_transaction.stamp_duty, :precision => 2)
       %td= stock_transaction.transaction_date
       %td= stock_transaction.exchange
       %td= link_to 'Edit', edit_portfolio_stock_transaction_path(stock_transaction, :portfolio_id => @portfolio.id)
