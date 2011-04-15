@@ -110,4 +110,21 @@ describe PortfolioStock do
     }
     its(:realized_profit_percentage) { should be_within(0.01).of(41.78) }
   end
+
+  describe "#investment" do
+    before {
+      Factory(:stock_purchase, :transaction_price => 21.4, :portfolio_stock => portfolio_stock, :quantity => 5)
+      Factory(:stock_purchase, :transaction_price => 27.9, :portfolio_stock => portfolio_stock, :quantity => 5)
+    }
+    its(:investment) { should be_within(0.01).of(246.5) }
+  end
+
+  describe "#outstanding_investment" do
+    before {
+      Factory(:stock_purchase, :transaction_price => 21.4, :portfolio_stock => portfolio_stock, :quantity => 5)
+      Factory(:stock_purchase, :transaction_price => 27.9, :portfolio_stock => portfolio_stock, :quantity => 5)
+      Factory(:stock_sale, :transaction_price => 33.4, :portfolio_stock => portfolio_stock, :quantity => 4)
+    }
+    its(:outstanding_investment) { should be_within(0.01).of(147.9) }
+  end
 end

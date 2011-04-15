@@ -13,7 +13,7 @@ module StockAnalyzer
       g.helper_specs false
       g.routing_specs false
       g.test_framework :rspec  
-      g.fixture_replacement :factory_girl  
+      g.fixture_replacement :factory_girl
     end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

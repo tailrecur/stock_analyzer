@@ -10,4 +10,6 @@ describe CompaniesController do
     end
   end
 
+  it { should respond_to('json')}
+
 end

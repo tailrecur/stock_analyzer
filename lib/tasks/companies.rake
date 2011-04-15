@@ -131,7 +131,7 @@ namespace :company do
   def relevant_companies(model_type)
 #    [Company.find_by_name("Gujarat Foils")]
 #    Company.limit(10)
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [2.days.ago])
+    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [1.month.ago])
   end
 
   class Importer
