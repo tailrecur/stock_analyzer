@@ -8,7 +8,7 @@ module PortfoliosHelper
   end
 
   def unrealized_profit_percentage
-    unrealized_profit / outstanding_investment * 100
+    unrealized_profit.divide_by(outstanding_investment) * 100
   end
 
   def sold_investment
@@ -20,7 +20,7 @@ module PortfoliosHelper
   end
 
   def realized_profit_percentage
-    realized_profit / sold_investment * 100
+    realized_profit.divide_by(sold_investment) * 100
   end
 
   def total_investment
@@ -32,6 +32,6 @@ module PortfoliosHelper
   end
 
   def total_profit_percentage
-    total_profit / total_investment * 100
+    total_profit.divide_by(total_investment) * 100
   end
 end

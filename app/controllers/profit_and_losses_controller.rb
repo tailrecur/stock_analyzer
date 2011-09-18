@@ -4,6 +4,6 @@ class ProfitAndLossesController < InheritedResources::Base
   belongs_to :company
 
   def collection
-    end_of_association_chain.order("period_ended").limit(params[:per_page])
+    end_of_association_chain.order("period_ended desc").limit(params[:per_page]).reverse
   end
 end

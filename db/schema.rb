@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110330160928) do
+ActiveRecord::Schema.define(:version => 20110519170343) do
 
   create_table "balance_sheets", :force => true do |t|
     t.date     "period_ended"
@@ -135,6 +135,8 @@ ActiveRecord::Schema.define(:version => 20110330160928) do
     t.date     "start_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sensex_start"
+    t.integer  "sensex_end"
   end
 
   create_table "profit_and_losses", :force => true do |t|

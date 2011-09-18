@@ -34,7 +34,7 @@ namespace :company do
 
   desc "Update company prices from NSE"
   task :update_price_data_from_nse => :environment do
-    day = last_working_day(Date.yesterday)
+    day = last_working_day(Date.yesterday+1)
     url = "http://www.nseindia.com/content/historical/EQUITIES/#{day.strftime("%Y/%b").upcase}/cm#{day.strftime("%d%b%Y").upcase}bhav.csv.zip"
     `wget --header="User-Agent: Mozilla/5.0" #{url} --output-document=tmp/nse_data.csv.zip`
     ActiveRecord::Base.transaction do
@@ -51,7 +51,7 @@ namespace :company do
 
   desc "Update company prices from BSE"
   task :update_price_data_from_bse => :environment do
-    day = last_working_day(Date.yesterday)
+    day = last_working_day(Date.yesterday+1)
     url = "http://www.bseindia.com/bhavcopy/eq#{day.strftime("%d%m%y")}_csv.zip"
     `cp tmp/bse_data.csv.zip tmp/bse_data.csv.zip.old`
     `wget --header="User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.18 Safari/534.16" #{url} --output-document=tmp/bse_data.csv.zip`
@@ -130,8 +130,9 @@ namespace :company do
 
   def relevant_companies(model_type)
 #    [Company.find_by_name("Gujarat Foils")]
+    [Company.find(19)]
 #    Company.limit(10)
-    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [1.month.ago])
+#    Company.joins("LEFT OUTER JOIN #{model_type} ON #{model_type}.company_id = companies.id").group("companies.id").having("ifnull(max(#{model_type}.created_at), date('1983-01-01')) < date(?)", [1.month.ago])
   end
 
   class Importer

@@ -2,7 +2,7 @@ class Company < ActiveRecord::Base
   extend ActiveSupport::Memoizable
 
   belongs_to :sector
-  has_many :balance_sheets, :order => "period_ended asc"
+  has_many :balance_sheets
   has_many :cash_flows
   has_many :cash_flows_for_dcf, :class_name => "CashFlow", :order => "period_ended desc", :limit => 5
   has_many :quarterly_results

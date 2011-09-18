@@ -4,6 +4,8 @@
   %tr
     %th Name
     %th Start date
+    %th Sensex Start
+    %th Sensex End
     %th
     %th
 
@@ -11,6 +13,8 @@
     %tr
       %td= link_to portfolio.name, portfolio
       %td= portfolio.start_date.strftime("%d %b, %Y")
+      %td= portfolio.sensex_start
+      %td= portfolio.sensex_end
       %td= link_to 'Edit', edit_portfolio_path(portfolio)
       %td= link_to 'Destroy', portfolio, :confirm => 'Are you sure?', :method => :delete
 

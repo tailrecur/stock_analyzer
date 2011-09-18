@@ -12,6 +12,12 @@
   .field
     = f.label :start_date
     %input{:type => :text, :id => :start_date, :name => "portfolio[start_date]", :value => "#{@portfolio.start_date.strftime("%d %b, %Y")}"}
+  .field
+    = f.label :sensex_start
+    = f.text_field :sensex_start
+  .field
+    = f.label :sensex_end
+    = f.text_field :sensex_end
   .actions
     = f.submit 'Save'
 
